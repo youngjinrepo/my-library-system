@@ -8,9 +8,17 @@ class BookInfoTest {
 
     @Test
     void createTest() {
-        BookInfo harryPotter = BookInfo.acquireBook("해리 포터와 마법사의 돌 1", "J.K. 롤링 저자", "문학수첩", "9791193790403", false);
+        BookInfo harryPotter = BookInfo.acquireBook("해리 포터와 마법사의 돌 1", "1권", "J.K. 롤링 저자", "문학수첩", "9791193790403", false);
 
         assertThat(harryPotter).isNotNull();
-        assertThat(harryPotter.title).isEqualTo("해리 포터와 마법사의 돌 1");
+        assertThat(harryPotter.getTitle()).isEqualTo("해리 포터와 마법사의 돌 1");
+    }
+
+    @Test
+    void catalogingTest() {
+        BookInfo harryPotter = BookInfo.acquireBook("해리 포터와 마법사의 돌 1", "1권","J.K. 롤링 저자", "문학수첩", "9791193790403", false);
+        //harryPotter.cataloging("843");
+
+        assertThat(harryPotter.getStatus()).isEqualTo(BookInfoStatus.CATALOGING);
     }
 }
