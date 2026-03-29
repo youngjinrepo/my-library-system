@@ -9,6 +9,8 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static me.my_library_system.domain.BookItem.*;
+
 @Entity
 @Getter
 @Setter
@@ -43,7 +45,7 @@ public class BookInfo {
         return new BookInfo(title, volume, author, publisher, ISBN, isAdult);
     }
 
-    public void cataloging(String classify, String location, int bookCnt) {
+    public void cataloging(String classify, String location, int bookCnt, int startSequence) {
         if ( this.id==null ) {
             throw new RuntimeException("Book ID is null");
         }
@@ -52,7 +54,7 @@ public class BookInfo {
         }
 
         for (int i = 0; i < bookCnt; i++) {
-            bookItems.add(BookItem.createBookItem(new BookItemRegisterRequest(this.title, this.volume, this.author, location, classify, i)));
+            this.bookItems.add(createBookItem(new BookItemRegisterRequest(this.title, this.volume, this.author, location, classify, startSequence+i)));
         }
 
         this.classify = classify;

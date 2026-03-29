@@ -23,10 +23,18 @@ public class BookItem {
 
     public static BookItem createBookItem(BookItemRegisterRequest request) {
         BookItem bookItem = new BookItem();
-        //generateCode();
+        bookItem.setCode(generateCode(Library.getCode(), request.bookNo()));
         //generateCallNo();
         bookItem.setLocation(request.location());
 
         return bookItem;
     }
+
+    private static String generateCode(String code, int sequenceNo) {
+        return String.format("%s%06d",code, sequenceNo);
+    }
 }
+/*
+* CODE를 할당하기 위해서는 도서관의 고유코드가 필요함
+*
+* */
