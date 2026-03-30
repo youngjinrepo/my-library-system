@@ -16,13 +16,19 @@ public class BookCatalogingService {
     private final CustomSequenceRepository sequenceRepository;
 
     @Transactional
-    public void processCataloging(Long bookId, String classify, String location, int bookCnt) {
+    public void processCataloging(Long bookId, String classify, int bookCnt) {
         BookInfo bookInfo = bookInfoRepository.findById(bookId).orElseThrow();
         CustomSequence customSequence = sequenceRepository.findByNameWithLock("BOOK_CODE")
                 .orElseGet(() -> sequenceRepository.save(new CustomSequence("BOOK_CODE", 0)));
 
         int startSeq = customSequence.getNextSequence(bookCnt);
 
-        bookInfo.cataloging(classify, location, bookCnt, startSeq);
+        bookInfo.cataloging(classify, bookCnt, startSeq);
+    }
+
+    @Transactional
+    public void processShelving(Long bookId, String location){
+        BookInfo bookInfo = bookInfoRepository.findById(bookId).orElseThrow();
+        bookInfo.shelve(location);
     }
 }

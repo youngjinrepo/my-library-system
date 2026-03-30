@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import me.my_library_system.domain.enums.BookInfoStatus;
+import me.my_library_system.domain.enums.BookItemStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,19 +47,36 @@ public class BookInfo {
         return new BookInfo(title, volume, author, publisher, ISBN, isAdult);
     }
 
-    public void cataloging(String classify, String location, int bookCnt, int startSequence) {
+    public void cataloging(String classify, int bookCnt, int startSequence) {
         if ( this.id==null ) {
             throw new RuntimeException("Book ID is null");
         }
         if ( this.status != BookInfoStatus.DRAFT) {
             throw new IllegalStateException("DRAFT 상태일 때만 편목이 가능합니다.");
         }
+        if ( bookCnt <= 0 ) {
+            throw new IllegalArgumentException("도서의 갯수를 올바르게 입력해주세요");
+        }
 
         for (int i = 0; i < bookCnt; i++) {
-            this.bookItems.add(createBookItem(new BookItemRegisterRequest(this.title, this.volume, this.author, location, classify, startSequence+i)));
+            this.bookItems.add(createBookItem(new BookItemRegisterRequest(this.title, this.volume, this.author, classify, startSequence+i, i+1)));
         }
 
         this.classify = classify;
         this.status = BookInfoStatus.CATALOGING;
+    }
+
+    public void shelve(String location) {
+        if ( this.status != BookInfoStatus.CATALOGING) {
+            throw new IllegalStateException("CATALOGING 상태일 때만 배가가 가능합니다.");
+        }
+        if (location.isEmpty()) {
+            throw new IllegalArgumentException("배가 위치를 입력 해야합니다.");
+        }
+        this.status = BookInfoStatus.COMPLETED;
+        this.bookItems.forEach(bookItem -> {
+            bookItem.setStatus(BookItemStatus.SHELVING);
+            bookItem.setLocation(location);
+        });
     }
 }

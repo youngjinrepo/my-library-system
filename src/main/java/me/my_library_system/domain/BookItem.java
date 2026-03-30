@@ -4,12 +4,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+import me.my_library_system.domain.enums.BookItemStatus;
 
 @Entity
 @Getter
-@Setter
+@ToString
+@Setter(AccessLevel.PROTECTED)
 public class BookItem {
 
     @Id
@@ -17,24 +21,23 @@ public class BookItem {
     private Long id;
     private String code;
     private String callNo;
-    private String status;
+    private BookItemStatus status;
     private String location;
 
 
     public static BookItem createBookItem(BookItemRegisterRequest request) {
         BookItem bookItem = new BookItem();
         bookItem.setCode(generateCode(Library.getCode(), request.bookNo()));
-        //generateCallNo();
-        bookItem.setLocation(request.location());
-
+        bookItem.setCallNo(generateCallNo(request.classify(), request.author(), request.volume(), request.bookCnt()));
+        bookItem.setStatus(BookItemStatus.CATALOGING);
         return bookItem;
+    }
+
+    private static String generateCallNo(String classify, String author, String volume, int bookCnt) {
+        return String.format("%s-%s-%s-%d", classify, author.charAt(0), volume, bookCnt);
     }
 
     private static String generateCode(String code, int sequenceNo) {
         return String.format("%s%06d",code, sequenceNo);
     }
 }
-/*
-* CODE를 할당하기 위해서는 도서관의 고유코드가 필요함
-*
-* */
