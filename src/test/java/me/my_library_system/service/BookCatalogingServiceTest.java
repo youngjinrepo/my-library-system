@@ -1,8 +1,9 @@
 package me.my_library_system.service;
 
-import me.my_library_system.domain.BookInfo;
+import me.my_library_system.application.service.BookCatalogingService;
+import me.my_library_system.domain.book.BookInfo;
 import me.my_library_system.domain.enums.BookInfoStatus;
-import me.my_library_system.domain.BookItem;
+import me.my_library_system.domain.book.BookItem;
 import me.my_library_system.domain.enums.BookItemStatus;
 import me.my_library_system.repository.BookInfoRepository;
 import org.junit.jupiter.api.BeforeEach;

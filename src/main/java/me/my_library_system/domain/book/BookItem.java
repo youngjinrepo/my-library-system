@@ -1,4 +1,4 @@
-package me.my_library_system.domain;
+package me.my_library_system.domain.book;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import me.my_library_system.domain.Library;
 import me.my_library_system.domain.enums.BookItemStatus;
 
 @Entity

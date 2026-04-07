@@ -1,4 +1,4 @@
-package me.my_library_system.domain;
+package me.my_library_system.domain.book;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -11,7 +11,7 @@ import me.my_library_system.domain.enums.BookItemStatus;
 import java.util.ArrayList;
 import java.util.List;
 
-import static me.my_library_system.domain.BookItem.*;
+import static me.my_library_system.domain.book.BookItem.*;
 
 @Entity
 @Getter

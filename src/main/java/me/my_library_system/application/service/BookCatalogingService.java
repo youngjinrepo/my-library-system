@@ -1,7 +1,7 @@
-package me.my_library_system.service;
+package me.my_library_system.application.service;
 
 import lombok.RequiredArgsConstructor;
-import me.my_library_system.domain.BookInfo;
+import me.my_library_system.domain.book.BookInfo;
 import me.my_library_system.domain.CustomSequence;
 import me.my_library_system.repository.BookInfoRepository;
 import me.my_library_system.repository.CustomSequenceRepository;

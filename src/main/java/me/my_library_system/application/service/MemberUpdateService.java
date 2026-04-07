@@ -1,4 +1,4 @@
-package me.my_library_system.service;
+package me.my_library_system.application.service;
 
 import lombok.RequiredArgsConstructor;
 import me.my_library_system.domain.Member;
