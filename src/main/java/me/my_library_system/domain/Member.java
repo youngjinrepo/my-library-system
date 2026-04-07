@@ -1,9 +1,9 @@
 package me.my_library_system.domain;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import lombok.*;
+import me.my_library_system.domain.book.BookItem;
 import me.my_library_system.domain.enums.MemberStatus;
 
 import java.time.LocalDateTime;
@@ -26,7 +26,7 @@ public class Member {
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;
     private LocalDateTime deleteAt;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Loan> loans;
 
     public static Member createMember(String name, String email, String sex, int age, String address) {
@@ -41,15 +41,9 @@ public class Member {
         return member;
     }
 
-    public boolean canBorrow(BookItem bookItem, LibraryPolicy policy) {
+    public boolean canBorrow() {
         if (this.status!=MemberStatus.REGULAR) {
             throw new IllegalStateException("대출 불가한 이용자 입니다.");
-        }
-        if (!bookItem.isAvailable()) {
-            throw new IllegalStateException(bookItem.getCode() + " 도서는 이용 불가합니다.");
-        }
-        if (loans.size() < policy.getMaxLoanCnt()) {
-            throw new IllegalStateException("최대 대출가능 건수를 초과했습니다.");
         }
         return true;
     }

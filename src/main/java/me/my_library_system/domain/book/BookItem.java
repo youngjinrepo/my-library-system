@@ -45,4 +45,5 @@ public class BookItem {
     public boolean isAvailable() {
         return this.status==BookItemStatus.SHELVING;
     }
+
 }
