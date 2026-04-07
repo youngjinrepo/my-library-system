@@ -41,4 +41,8 @@ public class BookItem {
     private static String generateCode(String code, int sequenceNo) {
         return String.format("%s%06d",code, sequenceNo);
     }
+
+    public boolean isAvailable() {
+        return this.status==BookItemStatus.SHELVING;
+    }
 }
