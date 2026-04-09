@@ -1,6 +1,5 @@
-package me.my_library_system.repository;
+package me.my_library_system.domain.book;
 
-import me.my_library_system.domain.book.BookItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

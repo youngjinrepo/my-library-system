@@ -8,8 +8,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import me.my_library_system.domain.Library;
-import me.my_library_system.domain.enums.BookItemStatus;
 
 @Entity
 @Getter
@@ -25,10 +23,9 @@ public class BookItem {
     private BookItemStatus status;
     private String location;
 
-
     public static BookItem createBookItem(BookItemRegisterRequest request) {
         BookItem bookItem = new BookItem();
-        bookItem.setCode(generateCode(Library.getCode(), request.bookNo()));
+        bookItem.setCode(generateCode(request.code(), request.bookNo()));
         bookItem.setCallNo(generateCallNo(request.classify(), request.author(), request.volume(), request.bookCnt()));
         bookItem.setStatus(BookItemStatus.CATALOGING);
         return bookItem;

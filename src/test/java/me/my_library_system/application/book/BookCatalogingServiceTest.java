@@ -1,11 +1,10 @@
-package me.my_library_system.service;
+package me.my_library_system.application.book;
 
-import me.my_library_system.application.service.BookCatalogingService;
 import me.my_library_system.domain.book.BookInfo;
-import me.my_library_system.domain.enums.BookInfoStatus;
+import me.my_library_system.domain.book.BookInfoStatus;
 import me.my_library_system.domain.book.BookItem;
-import me.my_library_system.domain.enums.BookItemStatus;
-import me.my_library_system.repository.BookInfoRepository;
+import me.my_library_system.domain.book.BookItemStatus;
+import me.my_library_system.domain.book.BookInfoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +58,7 @@ class BookCatalogingServiceTest {
         BookInfo harryPotter = BookInfo.acquireBook("해리 포터와 마법사의 돌 1", "1권", "J.K. 롤링 저자", "문학수첩", "9791193790403", false);
         bookInfoRepository.save(harryPotter);
 
-        assertThatThrownBy(() -> {harryPotter.cataloging("dummy", 0, 100);})
+        assertThatThrownBy(() -> {harryPotter.cataloging("dummy", 0, 100, "??");})
                 .isInstanceOf(IllegalArgumentException.class);
     }
 

@@ -1,6 +1,6 @@
-package me.my_library_system.domain.enums;
+package me.my_library_system.domain.member;
 
-public enum MemberStatus {
+public enum MemberGrade {
     ASSOCIATE,    // 준회원
     REGULAR,      // 정회원
     DORMANT,      // 휴면회원

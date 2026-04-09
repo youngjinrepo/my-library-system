@@ -1,21 +1,20 @@
-package me.my_library_system.application.service;
+package me.my_library_system.application.member;
 
 import lombok.RequiredArgsConstructor;
-import me.my_library_system.domain.Member;
-import me.my_library_system.repository.MemberRepository;
+import me.my_library_system.domain.member.Member;
+import me.my_library_system.domain.member.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class MemberUpdateService {
-
     private final MemberRepository memberRepository;
     //private final IdentityAuthentication identityAuthentication;
 
     @Transactional
-    public void registerMember(Long id, String ci) {
+    public void promoteMember(Long id, String ci) {
         Member member = memberRepository.findById(id).orElseThrow();
-        //member.registerMember(ci);
+        Member.promoteMember(member, ci);
     }
 }

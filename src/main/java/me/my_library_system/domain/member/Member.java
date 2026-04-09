@@ -1,19 +1,19 @@
-package me.my_library_system.domain;
+package me.my_library_system.domain.member;
 
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
-import me.my_library_system.domain.book.BookItem;
-import me.my_library_system.domain.enums.MemberStatus;
+import me.my_library_system.domain.loan.Loan;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter(AccessLevel.PROTECTED)
 public class Member {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String email;
@@ -21,8 +21,7 @@ public class Member {
     private int age;
     private String address;
     private String ci;
-    private String grade;
-    private MemberStatus status;
+    private MemberGrade grade;
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;
     private LocalDateTime deleteAt;
@@ -37,12 +36,18 @@ public class Member {
         member.setAge(age);
         member.setAddress(address);
         member.setCreatedAt(LocalDateTime.now());
-        member.setStatus(MemberStatus.ASSOCIATE);
+        member.setGrade(MemberGrade.ASSOCIATE);
         return member;
     }
 
+    public static void promoteMember(Member member, String ci) {
+        member.setCi(ci);
+        member.setUpdateAt(LocalDateTime.now());
+        member.setGrade(MemberGrade.REGULAR);
+    }
+
     public boolean canBorrow() {
-        if (this.status!=MemberStatus.REGULAR) {
+        if (this.grade!=MemberGrade.REGULAR) {
             throw new IllegalStateException("대출 불가한 이용자 입니다.");
         }
         return true;

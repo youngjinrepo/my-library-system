@@ -1,6 +1,5 @@
-package me.my_library_system.domain;
+package me.my_library_system.domain.book;
 
-import me.my_library_system.domain.book.BookInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -5,8 +5,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import me.my_library_system.domain.enums.BookInfoStatus;
-import me.my_library_system.domain.enums.BookItemStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +45,7 @@ public class BookInfo {
         return new BookInfo(title, volume, author, publisher, ISBN, isAdult);
     }
 
-    public void cataloging(String classify, int bookCnt, int startSequence) {
+    public void cataloging(String classify, int bookCnt, int startSequence,String code) {
         if ( this.id==null ) {
             throw new RuntimeException("Book ID is null");
         }
@@ -59,7 +57,7 @@ public class BookInfo {
         }
 
         for (int i = 0; i < bookCnt; i++) {
-            this.bookItems.add(createBookItem(new BookItemRegisterRequest(this.title, this.volume, this.author, classify, startSequence+i, i+1)));
+            this.bookItems.add(createBookItem(new BookItemRegisterRequest(this.title, this.volume, this.author, classify, startSequence+i, i+1, code)));
         }
 
         this.classify = classify;

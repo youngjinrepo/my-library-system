@@ -1,4 +1,4 @@
-package me.my_library_system.domain.enums;
+package me.my_library_system.domain.book;
 
 public enum BookInfoStatus {
     DRAFT,

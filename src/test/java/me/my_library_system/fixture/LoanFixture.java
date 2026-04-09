@@ -1,13 +1,13 @@
 package me.my_library_system.fixture;
 
-import me.my_library_system.domain.BookInfo;
-import me.my_library_system.domain.BookItem;
-import me.my_library_system.domain.Loan;
-import me.my_library_system.domain.Member;
-import me.my_library_system.repository.BookInfoRepository;
-import me.my_library_system.repository.BookItemRepository;
-import me.my_library_system.repository.MemberRepository;
-import me.my_library_system.service.BookCatalogingService;
+import me.my_library_system.application.book.BookCatalogingService;
+import me.my_library_system.domain.loan.Loan;
+import me.my_library_system.domain.member.Member;
+import me.my_library_system.domain.book.BookInfo;
+import me.my_library_system.domain.book.BookItem;
+import me.my_library_system.domain.book.BookInfoRepository;
+import me.my_library_system.domain.book.BookItemRepository;
+import me.my_library_system.domain.member.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -44,6 +44,12 @@ public class LoanFixture {
 
     public Member createMember() {
         Member member = Member.createMember("김대기", "kim.wait@name.com", "남", 10, "ox빌라 302호");
+        return memberRepository.save(member);
+    }
+
+    public Member getLoanableMember() {
+        Member member = createMember();
+        Member.promoteMember(member, "ci");
         return memberRepository.save(member);
     }
 }

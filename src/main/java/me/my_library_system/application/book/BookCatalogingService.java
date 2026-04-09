@@ -1,10 +1,12 @@
-package me.my_library_system.application.service;
+package me.my_library_system.application.book;
 
 import lombok.RequiredArgsConstructor;
+import me.my_library_system.domain.library.Library;
 import me.my_library_system.domain.book.BookInfo;
 import me.my_library_system.domain.CustomSequence;
-import me.my_library_system.repository.BookInfoRepository;
+import me.my_library_system.domain.book.BookInfoRepository;
 import me.my_library_system.repository.CustomSequenceRepository;
+import me.my_library_system.domain.library.LibraryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +16,7 @@ public class BookCatalogingService {
 
     private final BookInfoRepository bookInfoRepository;
     private final CustomSequenceRepository sequenceRepository;
+    private final LibraryRepository libraryRepository;
 
     @Transactional
     public void processCataloging(Long bookId, String classify, int bookCnt) {
@@ -23,7 +26,8 @@ public class BookCatalogingService {
 
         int startSeq = customSequence.getNextSequence(bookCnt);
 
-        bookInfo.cataloging(classify, bookCnt, startSeq);
+        Library library = libraryRepository.getLibrary();
+        bookInfo.cataloging(classify, bookCnt, startSeq, library.getCode());
     }
 
     @Transactional

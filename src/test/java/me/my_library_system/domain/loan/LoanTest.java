@@ -1,4 +1,4 @@
-package me.my_library_system.domain;
+package me.my_library_system.domain.loan;
 
 import org.junit.jupiter.api.Test;
 
