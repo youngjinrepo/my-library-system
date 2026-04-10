@@ -1,12 +1,11 @@
 package me.my_library_system.repository;
 
-import me.my_library_system.domain.CustomSequence;
+import me.my_library_system.adapter.out.persistence.sequnce.CustomSequence;
+import me.my_library_system.adapter.out.persistence.sequnce.CustomSequenceRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class CustomSequenceRepositoryTest {

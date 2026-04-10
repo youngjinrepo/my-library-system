@@ -1,10 +1,6 @@
 package me.my_library_system.application.book;
 
-import me.my_library_system.domain.book.BookInfo;
-import me.my_library_system.domain.book.BookInfoStatus;
-import me.my_library_system.domain.book.BookItem;
-import me.my_library_system.domain.book.BookItemStatus;
-import me.my_library_system.domain.book.BookInfoRepository;
+import me.my_library_system.domain.book.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +19,9 @@ class BookCatalogingServiceTest {
     @Autowired
     BookInfoRepository bookInfoRepository;
 
-
-    @BeforeEach
-    void setUp() {
-
-    }
-
     @Test
     void catalogingTest() {
-        BookInfo harryPotter = BookInfo.acquireBook("해리 포터와 마법사의 돌 1", "1권", "J.K. 롤링 저자", "문학수첩", "9791193790403", false);
+        BookInfo harryPotter = BookFixture.createBookInfo();
         bookInfoRepository.save(harryPotter);
 
         bookCatalogingService.processCataloging(harryPotter.getId(), "843", 3);
@@ -55,7 +45,7 @@ class BookCatalogingServiceTest {
 
     @Test
     void catalogingFailTest() {
-        BookInfo harryPotter = BookInfo.acquireBook("해리 포터와 마법사의 돌 1", "1권", "J.K. 롤링 저자", "문학수첩", "9791193790403", false);
+        BookInfo harryPotter = BookFixture.createBookInfo();
         bookInfoRepository.save(harryPotter);
 
         assertThatThrownBy(() -> {harryPotter.cataloging("dummy", 0, 100, "??");})
@@ -64,7 +54,7 @@ class BookCatalogingServiceTest {
 
     @Test
     void shelvingTest() {
-        BookInfo harryPotter = BookInfo.acquireBook("해리 포터와 마법사의 돌 1", "1권", "J.K. 롤링 저자", "문학수첩", "9791193790403", false);
+        BookInfo harryPotter = BookFixture.createBookInfo();
         bookInfoRepository.save(harryPotter);
 
         bookCatalogingService.processCataloging(harryPotter.getId(), "843",  3);

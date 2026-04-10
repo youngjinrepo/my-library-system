@@ -43,4 +43,11 @@ public class BookItem {
         return this.status==BookItemStatus.SHELVING;
     }
 
+    public void unavailable() {
+        if (this.status==BookItemStatus.LOANED) {
+            throw new IllegalStateException("대출중인 도서는 비활성화 할 수 없습니다.");
+        }
+        this.status = BookItemStatus.SHELVING;
+    }
+
 }

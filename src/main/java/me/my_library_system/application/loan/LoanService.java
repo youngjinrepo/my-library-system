@@ -27,7 +27,7 @@ public class LoanService {
         BookItem bookItem = bookItemRepository.findById(bookItemId).orElseThrow();
         Policy policy = libraryRepository.getLibrary().getPolicy();
 
-        if ( bookItem.isAvailable() ) {
+        if ( !bookItem.isAvailable() ) {
             throw new IllegalStateException("도서가 이용 불가 상태입니다.");
         }
         member.canBorrow();

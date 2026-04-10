@@ -1,7 +1,6 @@
-package me.my_library_system.repository;
+package me.my_library_system.adapter.out.persistence.sequnce;
 
 import jakarta.persistence.LockModeType;
-import me.my_library_system.domain.CustomSequence;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;

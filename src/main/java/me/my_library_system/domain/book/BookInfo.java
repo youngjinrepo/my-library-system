@@ -13,7 +13,7 @@ import static me.my_library_system.domain.book.BookItem.*;
 
 @Entity
 @Getter
-@Setter
+@Setter(AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BookInfo {
     @Id
@@ -31,7 +31,7 @@ public class BookInfo {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BookItem> bookItems = new ArrayList<>();
 
-    public BookInfo(String title, String volume, String author, String publisher, String ISBN, boolean isAdult) {
+    private BookInfo(String title, String volume, String author, String publisher, String ISBN, boolean isAdult) {
         this.title = title;
         this.volume = volume;
         this.author = author;
@@ -76,5 +76,15 @@ public class BookInfo {
             bookItem.setStatus(BookItemStatus.SHELVING);
             bookItem.setLocation(location);
         });
+    }
+
+    public void removable(){
+        this.bookItems.forEach(bookItem -> {
+            if (bookItem.getStatus().equals(BookItemStatus.LOANED)) {
+                throw new IllegalStateException("대출중인 도서가 있을 경우 서지 정보를 제거 할 수 없습니다.");
+            }
+        });
+
+        //예약 도입되면 예약 내역에서 제거
     }
 }

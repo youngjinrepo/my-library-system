@@ -22,4 +22,9 @@ public class MemberPersistenceAdapter implements MemberRepository {
     public Member save(Member member) {
         return memberJapRepository.save(member);
     }
+
+    @Override
+    public void flush() {
+        memberJapRepository.flush();
+    }
 }

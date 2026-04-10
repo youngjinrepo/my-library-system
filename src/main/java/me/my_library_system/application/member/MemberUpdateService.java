@@ -16,5 +16,6 @@ public class MemberUpdateService {
     public void promoteMember(Long id, String ci) {
         Member member = memberRepository.findById(id).orElseThrow();
         Member.promoteMember(member, ci);
+        memberRepository.save(member);
     }
 }

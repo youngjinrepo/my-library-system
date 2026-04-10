@@ -1,5 +1,6 @@
 package me.my_library_system.domain;
 
+import me.my_library_system.adapter.out.persistence.sequnce.CustomSequence;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;

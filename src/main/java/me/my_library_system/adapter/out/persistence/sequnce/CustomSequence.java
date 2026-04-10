@@ -1,4 +1,4 @@
-package me.my_library_system.domain;
+package me.my_library_system.adapter.out.persistence.sequnce;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
