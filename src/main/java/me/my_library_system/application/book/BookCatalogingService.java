@@ -35,4 +35,11 @@ public class BookCatalogingService {
         BookInfo bookInfo = bookInfoRepository.findById(bookId).orElseThrow();
         bookInfo.shelve(location);
     }
+
+    @Transactional
+    public void processRemove(Long bookInfoId) {
+        BookInfo bookInfo = bookInfoRepository.findById(bookInfoId).orElseThrow();
+        bookInfo.validateRemovable();
+        bookInfoRepository.deleteById(bookInfoId);
+    }
 }

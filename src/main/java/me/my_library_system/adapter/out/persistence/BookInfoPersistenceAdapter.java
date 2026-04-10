@@ -22,4 +22,9 @@ public class BookInfoPersistenceAdapter implements BookInfoRepository {
     public BookInfo save(BookInfo bookInfo) {
         return bookInfoJapRepository.save(bookInfo);
     }
+
+    @Override
+    public void deleteById(Long bookInfoId) {
+        bookInfoJapRepository.deleteById(bookInfoId);
+    }
 }

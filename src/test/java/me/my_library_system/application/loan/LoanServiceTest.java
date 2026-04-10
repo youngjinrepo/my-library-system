@@ -8,7 +8,6 @@ import me.my_library_system.domain.loan.Loan;
 import me.my_library_system.domain.member.MemberFixture;
 import me.my_library_system.domain.member.MemberRepository;
 import me.my_library_system.domain.loan.LoanRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;

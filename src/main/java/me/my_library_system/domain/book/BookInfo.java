@@ -78,7 +78,7 @@ public class BookInfo {
         });
     }
 
-    public void removable(){
+    public void validateRemovable(){
         this.bookItems.forEach(bookItem -> {
             if (bookItem.getStatus().equals(BookItemStatus.LOANED)) {
                 throw new IllegalStateException("대출중인 도서가 있을 경우 서지 정보를 제거 할 수 없습니다.");
