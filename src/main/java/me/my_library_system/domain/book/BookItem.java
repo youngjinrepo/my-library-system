@@ -50,4 +50,7 @@ public class BookItem {
         this.status = BookItemStatus.SHELVING;
     }
 
+    public void returnBook() {
+        this.status=BookItemStatus.SHELVING;
+    }
 }

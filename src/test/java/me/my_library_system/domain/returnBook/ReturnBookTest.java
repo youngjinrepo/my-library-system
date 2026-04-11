@@ -9,7 +9,7 @@ class ReturnBookTest {
 
     @Test
     void 반납_생성() {
-        Assertions.assertThat(ReturnFixture.createReturnBook());
+        Assertions.assertThat(ReturnFixture.createReturnBook()).isInstanceOf(ReturnBook.class);
     }
 
 }

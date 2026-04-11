@@ -25,8 +25,8 @@ public class Member {
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;
     private LocalDateTime deleteAt;
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Loan> loans;
+//    @OneToMany(fetch = FetchType.LAZY)
+//    private List<Loan> loans;
 
     public static Member createMember(String name, String email, String sex, int age, String address) {
         Member member = new Member();

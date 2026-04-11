@@ -2,6 +2,7 @@ package me.my_library_system.adapter.out.persistence.jpa;
 
 import me.my_library_system.domain.loan.Loan;
 import me.my_library_system.domain.loan.LoanFixture;
+import me.my_library_system.domain.loan.LoanStatus;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,4 +27,10 @@ class LoanJpaRepositoryTest {
         assertThat(loan.get().getMemberId()).isEqualTo(1);
         assertThat(loan.get().getBookId()).isEqualTo(1L);
     }
+
+    @Test
+    void 이용자id로_대출건수_조회() {
+        Assertions.assertThat(loanJpaRepository.countByMemberIdAndStatus(1L, LoanStatus.LOAN)).isEqualTo(0);
+    }
+
 }

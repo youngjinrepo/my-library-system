@@ -18,4 +18,9 @@ public class BookItemPersistenceAdapter implements BookItemRepository {
     public Optional<BookItem> findById(Long id) {
         return bookItemJpaRepository.findById(id);
     }
+
+    @Override
+    public void save(BookItem bookItem) {
+        bookItemJpaRepository.save(bookItem);
+    }
 }

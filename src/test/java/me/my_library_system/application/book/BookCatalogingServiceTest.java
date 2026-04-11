@@ -7,12 +7,10 @@ import me.my_library_system.domain.library.Library;
 import me.my_library_system.domain.library.LibraryFixture;
 import me.my_library_system.domain.library.LibraryRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
-import static org.mockito.Mockito.*;
 
 class BookCatalogingServiceTest {
 

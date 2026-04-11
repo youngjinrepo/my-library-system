@@ -22,6 +22,7 @@ public class Loan {
     private LocalDateTime loanDate;
     private LocalDateTime dueDate;
     private int renewalCnt;
+    private LoanStatus status;
 
     public static Loan createLoan(Long memberId, Long bookId, int renewalCnt, long dueDaysCnt) {
         Loan loan = new Loan();
@@ -30,6 +31,7 @@ public class Loan {
         loan.setLoanDate(LocalDateTime.now());
         loan.setDueDate(LocalDateTime.now().plusDays(dueDaysCnt));
         loan.setRenewalCnt(renewalCnt);
+        loan.setStatus(LoanStatus.LOAN);
         return loan;
     }
 
@@ -39,5 +41,9 @@ public class Loan {
 
     public void delayDueDate(int days) {
         this.dueDate = LocalDateTime.now().plusDays(days);
+    }
+
+    public void returnLoan() {
+        this.status = LoanStatus.RETURNED;
     }
 }

@@ -10,7 +10,7 @@ public class MemberFixture {
     public static Member createRegularMember() {
         Member regularMember = createAssociateMember();
         Member.promoteMember(regularMember, "test|test|test");
-        regularMember.setLoans(new ArrayList<>());
+        //regularMember.setLoans(new ArrayList<>());
         return regularMember;
     }
 }

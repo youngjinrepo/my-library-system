@@ -4,4 +4,6 @@ import java.util.Optional;
 
 public interface BookItemRepository{
     Optional<BookItem> findById(Long Id);
+
+    void save(BookItem bookItem);
 }
