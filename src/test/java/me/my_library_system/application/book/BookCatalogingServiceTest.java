@@ -4,86 +4,112 @@ import me.my_library_system.adapter.out.persistence.sequnce.CustomSequence;
 import me.my_library_system.adapter.out.persistence.sequnce.CustomSequenceRepository;
 import me.my_library_system.domain.book.*;
 import me.my_library_system.domain.library.Library;
+import me.my_library_system.domain.library.LibraryFixture;
 import me.my_library_system.domain.library.LibraryRepository;
-import me.my_library_system.domain.library.Policy;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 class BookCatalogingServiceTest {
 
-
-    BookInfoRepository bookInfoRepository = Mockito.mock(BookInfoRepository.class);
-    CustomSequenceRepository customSequenceRepository = Mockito.mock(CustomSequenceRepository.class);
-    LibraryRepository libraryRepository = Mockito.mock(LibraryRepository.class);
+    BookInfoRepository bookInfoRepository = mock(BookInfoRepository.class);
+    CustomSequenceRepository customSequenceRepository = mock(CustomSequenceRepository.class);
+    LibraryRepository libraryRepository = mock(LibraryRepository.class);
     BookCatalogingService bookCatalogingService = new BookCatalogingService(bookInfoRepository, customSequenceRepository, libraryRepository);
 
     @Test
-    void catalogingTest() {
-
+    void 편목_작업_성공() {
         given(bookInfoRepository.findById(1L))
                 .willReturn(Optional.of(BookFixture.createBookInfo()));
         given(customSequenceRepository.findByNameWithLock("BOOK_CODE"))
                 .willReturn(Optional.of(new CustomSequence("BOOK_CODE", 0)));
         given(libraryRepository.getLibrary())
-                .willReturn(new Library(1L, "1","2", new Policy(1,2,3)));
-//
-//        BookInfo harryPotter = BookFixture.createBookInfo();
-//        bookInfoRepository.save(harryPotter);
+                .willReturn(new Library(1L, "1","2", LibraryFixture.creatrPolicy()));
 
         bookCatalogingService.processCataloging(1L, "843", 3);
-//
-//        harryPotter = bookInfoRepository.findById(harryPotter.getId()).orElse(null);
-//
-//        assertThat(harryPotter).isNotNull();
-//        assertThat(harryPotter.getId()).isNotNull();
-//
-//        List<BookItem> harryPotterV1s = harryPotter.getBookItems();
-//        assertThat(harryPotterV1s.size()).isEqualTo(3);
-//
-//        harryPotterV1s.forEach(System.out::println);
-//
-//        harryPotterV1s.forEach(
-//                bookItem -> {
-//                    assertThat(bookItem.getCallNo().isEmpty()).isEqualTo(false);
-//                    assertThat(bookItem.getCode().isEmpty()).isEqualTo(false);
-//                });
+
+        then(bookInfoRepository).should(times(1)).save(any(BookInfo.class));
     }
 
     @Test
-    void catalogingFailTest() {
-        BookInfo harryPotter = BookFixture.createBookInfo();
-        bookInfoRepository.save(harryPotter);
+    void 편목_실패_서지정보_이상() {
+        given(bookInfoRepository.findById(1L))
+                .willReturn(Optional.of(BookFixture.emptyBookInfo()));
+        given(customSequenceRepository.findByNameWithLock("BOOK_CODE"))
+                .willReturn(Optional.of(new CustomSequence("BOOK_CODE", 0)));
+        given(libraryRepository.getLibrary())
+                .willReturn(new Library(1L, "1","2", LibraryFixture.creatrPolicy()));
 
-        assertThatThrownBy(() -> {harryPotter.cataloging("dummy", 0, 100, "??");})
-                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> bookCatalogingService.processCataloging(1L, "843", 3))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("Book ID is null");
     }
 
     @Test
-    void shelvingTest() {
-        BookInfo harryPotter = BookFixture.createBookInfo();
-        bookInfoRepository.save(harryPotter);
+    void 편목_실패_도서상태_이상(){
+        given(bookInfoRepository.findById(1L))
+                .willReturn(Optional.of(BookFixture.createShelvingBookInfo()));
+        given(customSequenceRepository.findByNameWithLock("BOOK_CODE"))
+                .willReturn(Optional.of(new CustomSequence("BOOK_CODE", 0)));
+        given(libraryRepository.getLibrary())
+                .willReturn(new Library(1L, "1","2", LibraryFixture.creatrPolicy()));
 
-        bookCatalogingService.processCataloging(harryPotter.getId(), "843",  3);
-        harryPotter = bookInfoRepository.findById(harryPotter.getId()).orElse(null);
-
-        bookCatalogingService.processShelving(harryPotter.getId(), "1층 종합자료실");
-
-        assertThat(harryPotter.getStatus()).isEqualTo(BookInfoStatus.COMPLETED);
-        harryPotter.getBookItems().forEach(bookItem -> {
-            assertThat(bookItem.getStatus()).isEqualTo(BookItemStatus.SHELVING);
-        });
+        assertThatThrownBy(() -> bookCatalogingService.processCataloging(1L, "843", 3))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("DRAFT 상태일 때만 편목이 가능합니다.");
     }
 
     @Test
-    void removeTest() {
-        BookInfo harryPotter = BookFixture.createShelvingBookInfo();
-        bookCatalogingService.processRemove(harryPotter.getId());
+    void 편목_실패_도서갯수_이상(){
+        given(bookInfoRepository.findById(1L))
+                .willReturn(Optional.of(BookFixture.createBookInfo()));
+        given(customSequenceRepository.findByNameWithLock("BOOK_CODE"))
+                .willReturn(Optional.of(new CustomSequence("BOOK_CODE", 0)));
+        given(libraryRepository.getLibrary())
+                .willReturn(new Library(1L, "1","2", LibraryFixture.creatrPolicy()));
+
+        assertThatThrownBy(() -> bookCatalogingService.processCataloging(1L, "843", 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("도서의 갯수를 올바르게 입력해주세요");
+    }
+
+    @Test
+    void 배가_성공() {
+        given(bookInfoRepository.findById(1L))
+                .willReturn(Optional.of(BookFixture.createCatalogingBookInfo()));
+
+        bookCatalogingService.processShelving(1L, "1층 종합자료실");
+
+        then(bookInfoRepository).should(times(1)).save(any(BookInfo.class));
+    }
+
+    @Test
+    void 배가_실패_도서상태_이상() {
+        given(bookInfoRepository.findById(1L))
+                .willReturn(Optional.of(BookFixture.createBookInfo()));
+        assertThatThrownBy(() -> bookCatalogingService.processShelving(1L, "1층 종합자료실"))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("CATALOGING 상태일 때만 배가가 가능합니다.");
+    }
+
+    @Test
+    void 배가_실패_매개변수_이상() {
+        given(bookInfoRepository.findById(1L))
+                .willReturn(Optional.of(BookFixture.createCatalogingBookInfo()));
+        assertThatThrownBy(() -> bookCatalogingService.processShelving(1L, ""))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("배가 위치를 입력 해야합니다.");
+    }
+
+    @Test
+    void 도서_삭제_테스트() {
+        given(bookInfoRepository.findById(1L))
+                .willReturn(Optional.of(BookFixture.createShelvingBookInfo()));
+
+        bookCatalogingService.processRemove(1L);
     }
 }

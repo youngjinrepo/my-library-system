@@ -7,7 +7,7 @@ class LibraryTest {
 
     @Test
     void testLibrary() {
-        Library library = new Library(1L, "뽀식이네", "LDL", new Policy(1, 3, 14));
+        Library library = new Library(1L, "뽀식이네", "LDL", LibraryFixture.creatrPolicy());
 
         assertThat(library).isNotNull();
     }

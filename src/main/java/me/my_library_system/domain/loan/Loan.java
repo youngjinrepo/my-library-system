@@ -20,7 +20,6 @@ public class Loan {
     private Long bookId;
     private Long memberId;
     private LocalDateTime loanDate;
-    private LocalDateTime returnDate;
     private LocalDateTime dueDate;
     private int renewalCnt;
 
@@ -32,5 +31,13 @@ public class Loan {
         loan.setDueDate(LocalDateTime.now().plusDays(dueDaysCnt));
         loan.setRenewalCnt(renewalCnt);
         return loan;
+    }
+
+    public void increaseRenewalCnt() {
+        this.renewalCnt++;
+    }
+
+    public void delayDueDate(int days) {
+        this.dueDate = LocalDateTime.now().plusDays(days);
     }
 }

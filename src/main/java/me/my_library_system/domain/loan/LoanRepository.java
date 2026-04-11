@@ -1,8 +1,11 @@
 package me.my_library_system.domain.loan;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface LoanRepository extends JpaRepository<Loan, Long> {
+import java.util.Optional;
+
+public interface LoanRepository{
+    Optional<Loan> findByMemberIdAndBookId(Long memberId, Long bookItemId);
+
+    void save(Loan loan);
 }

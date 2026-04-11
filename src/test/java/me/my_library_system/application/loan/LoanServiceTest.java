@@ -2,6 +2,7 @@ package me.my_library_system.application.loan;
 
 import me.my_library_system.domain.book.*;
 import me.my_library_system.domain.library.Library;
+import me.my_library_system.domain.library.LibraryFixture;
 import me.my_library_system.domain.library.LibraryRepository;
 import me.my_library_system.domain.library.Policy;
 import me.my_library_system.domain.loan.Loan;
@@ -31,7 +32,7 @@ public class LoanServiceTest {
         given(bookItemRepository.findById(1L))
                 .willReturn(Optional.of(firstBook));
         given(libraryRepository.getLibrary())
-                .willReturn(new Library(1L, "12", "13", new Policy(3, 1, 10)));
+                .willReturn(new Library(1L, "12", "13", LibraryFixture.creatrPolicy()));
 
 
         loanService.loan(1L , 1L);
@@ -48,7 +49,7 @@ public class LoanServiceTest {
         given(bookItemRepository.findById(1L))
                 .willReturn(Optional.of(firstBook));
         given(libraryRepository.getLibrary())
-                .willReturn(new Library(1L, "12", "13", new Policy(3, 1, 10)));
+                .willReturn(new Library(1L, "12", "13", LibraryFixture.creatrPolicy()));
 
 
         assertThatThrownBy(() -> loanService.loan(1L , 1L))
@@ -65,7 +66,7 @@ public class LoanServiceTest {
         given(bookItemRepository.findById(1L))
                 .willReturn(Optional.of(firstBook));
         given(libraryRepository.getLibrary())
-                .willReturn(new Library(1L, "12", "13", new Policy(3, 1, 10)));
+                .willReturn(new Library(1L, "12", "13", LibraryFixture.creatrPolicy()));
 
 
         assertThatThrownBy(() -> loanService.loan(1L , 1L))
@@ -82,7 +83,7 @@ public class LoanServiceTest {
         given(bookItemRepository.findById(1L))
                 .willReturn(Optional.of(firstBook));
         given(libraryRepository.getLibrary())
-                .willReturn(new Library(1L, "12", "13", new Policy(0, 1, 10)));
+                .willReturn(new Library(1L, "12", "13", LibraryFixture.creatrBadPolicy()));
 
 
         assertThatThrownBy(() -> loanService.loan(1L , 1L))

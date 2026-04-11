@@ -28,12 +28,14 @@ public class BookCatalogingService {
 
         Library library = libraryRepository.getLibrary();
         bookInfo.cataloging(classify, bookCnt, startSeq, library.getCode());
+        bookInfoRepository.save(bookInfo);
     }
 
     @Transactional
     public void processShelving(Long bookId, String location){
         BookInfo bookInfo = bookInfoRepository.findById(bookId).orElseThrow();
         bookInfo.shelve(location);
+        bookInfoRepository.save(bookInfo);
     }
 
     @Transactional
