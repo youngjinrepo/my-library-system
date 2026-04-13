@@ -43,10 +43,9 @@ public class LoanService {
         Loan loan = loanRepository.findByMemberIdAndBookId(memberId, bookItemId)
                 .orElseThrow(() -> new IllegalArgumentException("조회되는 대출 내역이 없습니다."));
         Policy policy = libraryRepository.getLibrary().getPolicy();
-
+        //예약 정보가 있다면 막는다.
         policy.validateMaxRenewalCount(loan.getRenewalCnt());
         loan.increaseRenewalCnt();
         loan.delayDueDate(policy.returnDelayDays());
-        //예약 정보가 있다면 막는다.
     }
 }
