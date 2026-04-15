@@ -25,8 +25,6 @@ public class Member {
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;
     private LocalDateTime deleteAt;
-//    @OneToMany(fetch = FetchType.LAZY)
-//    private List<Loan> loans;
 
     public static Member createMember(String name, String email, String sex, int age, String address) {
         Member member = new Member();
@@ -41,6 +39,12 @@ public class Member {
     }
 
     public static void promoteMember(Member member, String ci) {
+        if (member.grade!=MemberGrade.ASSOCIATE) {
+            throw new IllegalStateException("Cannot modify member");
+        }
+        if (ci == null || ci.trim().isEmpty()) {
+            throw new IllegalArgumentException("CI 값은 비어있으면 안됩니다.");
+        }
         member.setCi(ci);
         member.setUpdateAt(LocalDateTime.now());
         member.setGrade(MemberGrade.REGULAR);

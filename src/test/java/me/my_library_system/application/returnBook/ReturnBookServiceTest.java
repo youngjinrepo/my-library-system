@@ -5,6 +5,7 @@ import me.my_library_system.domain.book.BookItem;
 import me.my_library_system.domain.book.BookItemRepository;
 import me.my_library_system.domain.loan.LoanFixture;
 import me.my_library_system.domain.loan.LoanRepository;
+import me.my_library_system.domain.member.MemberRepository;
 import me.my_library_system.domain.returnBook.ReturnBookRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,8 @@ class ReturnBookServiceTest {
     LoanRepository loanRepository = Mockito.mock(LoanRepository.class);
     BookItemRepository bookItemRepository = Mockito.mock(BookItemRepository.class);
     ReturnBookRepository returnBookRepository = Mockito.mock(ReturnBookRepository.class);
-    ReturnBookService returnBookService = new ReturnBookService(loanRepository, bookItemRepository, returnBookRepository);
+    MemberRepository memberRepository = Mockito.mock(MemberRepository.class);
+    ReturnBookService returnBookService = new ReturnBookService(loanRepository, bookItemRepository, returnBookRepository, memberRepository);
 
     @Test
     void 반납_테스트() {
