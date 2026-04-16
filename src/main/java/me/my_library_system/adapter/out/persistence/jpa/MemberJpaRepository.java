@@ -1,9 +1,9 @@
 package me.my_library_system.adapter.out.persistence.jpa;
 
-import me.my_library_system.domain.book.BookInfo;
+import me.my_library_system.domain.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BookInfoJapRepository extends JpaRepository<BookInfo, Long> {
+public interface MemberJpaRepository extends JpaRepository<Member,Long> {
 }

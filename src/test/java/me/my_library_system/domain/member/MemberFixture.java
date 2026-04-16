@@ -7,7 +7,7 @@ public class MemberFixture {
 
     public static Member createRegularMember() {
         Member regularMember = createAssociateMember();
-        Member.promoteMember(regularMember, "test|test|test");
+        regularMember.promoteMember(regularMember, "test|test|test");
         return regularMember;
     }
 }

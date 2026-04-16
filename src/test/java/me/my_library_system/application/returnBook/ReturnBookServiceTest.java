@@ -12,6 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,4 +39,21 @@ class ReturnBookServiceTest {
     }
 
 
+    @Test
+    void 반납_예정일_계산_로직_검증(){
+        LocalDate dueDate = LocalDateTime.now().minusDays(1).toLocalDate();
+        LocalDate today = LocalDateTime.now().toLocalDate();
+        long overdue = 0L;
+        if (dueDate.isBefore(today)) {
+            overdue = ChronoUnit.DAYS.between(dueDate, today);
+        }
+        Assertions.assertThat(overdue).isEqualTo(1L);
+
+        dueDate = LocalDateTime.now().plusDays(1).toLocalDate();
+        today = LocalDateTime.now().toLocalDate();
+
+        overdue = ChronoUnit.DAYS.between(dueDate, today);
+
+        Assertions.assertThat(overdue).isEqualTo(-1L);
+    }
 }

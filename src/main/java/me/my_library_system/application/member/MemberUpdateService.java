@@ -10,12 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MemberUpdateService {
     private final MemberRepository memberRepository;
-    //private final IdentityAuthentication identityAuthentication;
 
     @Transactional
     public void promoteMember(Long id, String ci) {
         Member member = memberRepository.findById(id).orElseThrow();
-        Member.promoteMember(member, ci);
+        member.promoteMember(member, ci);
         memberRepository.save(member);
     }
 }

@@ -39,12 +39,12 @@ public class ReturnBookService {
         LocalDate today = LocalDateTime.now().toLocalDate();
 
         if (dueDate.isBefore(today)) {
-            ChronoUnit.DAYS.between(dueDate, today);
+            long overdue = ChronoUnit.DAYS.between(dueDate, today);
         }
 
         //이용자 연체시에 대출정지
 
-        ReturnBook returnBook = ReturnBook.createReturnBook(loan.getId(), loan.getMemberId(), loan.getBookId());
+        ReturnBook returnBook = ReturnBook.createReturnBook(loan.getId(), loan.getBookId(), loan.getMemberId());
         returnBookRepository.save(returnBook);
         bookItemRepository.save(bookItem);
         loanRepository.save(loan);
