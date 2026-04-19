@@ -22,12 +22,12 @@ public class ReturnBook {
     private Long memberId;
     private LocalDateTime returnDate;
 
-    public static ReturnBook createReturnBook(Long loanId,  Long bookId, Long memberId) {
+    public static ReturnBook createReturnBook(Long loanId,  Long bookId, Long memberId, LocalDateTime returnDate) {
         ReturnBook returnBook = new ReturnBook();
         returnBook.setLoanId(loanId);
         returnBook.setBookId(bookId);
         returnBook.setMemberId(memberId);
-        returnBook.setReturnDate(LocalDateTime.now());
+        returnBook.setReturnDate(returnDate);
         return returnBook;
     }
 }

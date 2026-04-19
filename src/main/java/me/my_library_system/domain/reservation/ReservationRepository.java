@@ -1,0 +1,13 @@
+package me.my_library_system.domain.reservation;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+public interface ReservationRepository {
+
+    void save(Reservation reservation);
+
+    List<Reservation> findByMemberIdAndStatus(Long memberId, ReservationStatus reservationStatus);
+
+    int countByMemberId(Long memberId, ReservationStatus reservationStatus, LocalDateTime start, LocalDateTime end);
+}

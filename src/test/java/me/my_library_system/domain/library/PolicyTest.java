@@ -1,6 +1,5 @@
 package me.my_library_system.domain.library;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
@@ -22,15 +21,27 @@ class PolicyTest {
 
     @Test
     void 반납연기_검증_성공() {
-        Assertions.assertThatCode(()->LibraryFixture.creatrPolicy().validateMaxRenewalCount(0))
+        assertThatCode(()->LibraryFixture.creatrPolicy().validateMaxRenewalCount(0))
                 .doesNotThrowAnyException();
     }
 
     @Test
     void 반납연기_검증_실패() {
-        Assertions.assertThatThrownBy(()->LibraryFixture.creatrPolicy().validateMaxRenewalCount(999))
+        assertThatThrownBy(()->LibraryFixture.creatrPolicy().validateMaxRenewalCount(999))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("최대 반납연기 횟수를 초과 하였습니다.");
     }
 
+    @Test
+    void 최대_예약가능건수_검사_성공(){
+        assertThatCode(()->LibraryFixture.creatrPolicy().validateMaxReservationCnt(Integer.MIN_VALUE))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    void 최대_예약가능건수_검사_실패(){
+        assertThatThrownBy(()->LibraryFixture.creatrPolicy().validateMaxReservationCnt(Integer.MAX_VALUE))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("최대 예약 가능 건수 (");
+    }
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -22,6 +23,7 @@ public class Member {
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;
     private LocalDateTime deleteAt;
+    private LocalDateTime suspendedDate;
 
     public static Member createMember(String name, String email, String sex, int age, String address) {
         Member member = new Member();
@@ -51,6 +53,15 @@ public class Member {
         if (this.grade!=MemberGrade.REGULAR) {
             throw new IllegalStateException("대출 불가한 이용자 입니다.");
         }
+        if (this.suspendedDate != null && LocalDateTime.now().isBefore(this.suspendedDate)) {
+            String formatted = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(suspendedDate);
+            throw new IllegalStateException(formatted + "까지 대출 불가합니다.");
+        }
         return true;
+    }
+
+    public void suspend(long overdue) {
+        this.suspendedDate=LocalDateTime.now().plusDays(overdue).withHour(23).withMinute(59).withSecond(59);
+        this.updateAt = LocalDateTime.now();
     }
 }

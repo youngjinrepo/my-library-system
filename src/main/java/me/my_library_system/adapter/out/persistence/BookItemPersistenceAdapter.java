@@ -6,6 +6,7 @@ import me.my_library_system.domain.book.BookItem;
 import me.my_library_system.domain.book.BookItemRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -22,5 +23,10 @@ public class BookItemPersistenceAdapter implements BookItemRepository {
     @Override
     public void save(BookItem bookItem) {
         bookItemJpaRepository.save(bookItem);
+    }
+
+    @Override
+    public List<BookItem> findByBookInfoId(Long bookInfoId) {
+        return bookItemJpaRepository.findByBookInfoId(bookInfoId);
     }
 }

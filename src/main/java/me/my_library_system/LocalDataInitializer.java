@@ -17,7 +17,7 @@ public class LocalDataInitializer implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         if ( libraryRepository.count() == 0 ) {
-            Policy policy = new Policy(3, 3, 14, 7);
+            Policy policy = new Policy(3, 3, 14, 7, 4, 3);
             Library library = new Library(1L, "빛나는 꿈누리 도서관", "LDL", policy);
             libraryRepository.save(library);
         }

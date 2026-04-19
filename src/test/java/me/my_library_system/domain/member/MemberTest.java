@@ -52,6 +52,14 @@ class MemberTest {
         assertThatThrownBy(() -> member.canBorrow()).isInstanceOf(IllegalStateException.class);
     }
 
+    @Test
+    void 대출정지기간에는_대출_불가(){
+        Member suspendedMember = MemberFixture.createSuspendedMember();
+        assertThatThrownBy(()->suspendedMember.canBorrow())
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("까지 대출 불가합니다.");
+    }
+
 
 
 }

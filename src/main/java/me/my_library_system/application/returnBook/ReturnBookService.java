@@ -27,7 +27,7 @@ public class ReturnBookService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public void returnBook(Long loanId) {
+    public void returnBook(Long loanId, LocalDateTime returnDateTime) {
         Loan loan = loanRepository.findById(loanId).orElseThrow();
         BookItem bookItem = bookItemRepository.findById(loan.getBookId()).orElseThrow();
         Member member = memberRepository.findById(loan.getMemberId()).orElseThrow();
@@ -36,17 +36,18 @@ public class ReturnBookService {
         bookItem.returnBook();
 
         LocalDate dueDate = loan.getDueDate().toLocalDate();
-        LocalDate today = LocalDateTime.now().toLocalDate();
+        LocalDate returnDate = returnDateTime.toLocalDate();
 
-        if (dueDate.isBefore(today)) {
-            long overdue = ChronoUnit.DAYS.between(dueDate, today);
+        if (dueDate.isBefore(returnDate)) {
+            long overdue = ChronoUnit.DAYS.between(dueDate, returnDate);
+            member.suspend(overdue);
         }
 
-        //이용자 연체시에 대출정지
+        ReturnBook returnBook = ReturnBook.createReturnBook(loan.getId(), loan.getBookId(), loan.getMemberId(), returnDateTime);
 
-        ReturnBook returnBook = ReturnBook.createReturnBook(loan.getId(), loan.getBookId(), loan.getMemberId());
         returnBookRepository.save(returnBook);
         bookItemRepository.save(bookItem);
         loanRepository.save(loan);
+        memberRepository.save(member);
     }
 }

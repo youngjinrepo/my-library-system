@@ -1,9 +1,6 @@
 package me.my_library_system.domain.book;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +15,8 @@ public class BookItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Long BookInfoId;
     private String code;
     private String callNo;
     private BookItemStatus status;
@@ -25,6 +24,7 @@ public class BookItem {
 
     public static BookItem createBookItem(BookItemRegisterRequest request) {
         BookItem bookItem = new BookItem();
+        bookItem.setBookInfoId(request.bookInfoId());
         bookItem.setCode(generateCode(request.code(), request.bookNo()));
         bookItem.setCallNo(generateCallNo(request.classify(), request.author(), request.volume(), request.bookCnt()));
         bookItem.setStatus(BookItemStatus.CATALOGING);

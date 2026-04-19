@@ -57,7 +57,7 @@ public class BookInfo {
         }
 
         for (int i = 0; i < bookCnt; i++) {
-            this.bookItems.add(createBookItem(new BookItemRegisterRequest(this.title, this.volume, this.author, classify, startSequence+i, i+1, code)));
+            this.bookItems.add(createBookItem(new BookItemRegisterRequest(this.id, this.title, this.volume, this.author, classify, startSequence+i, i+1, code)));
         }
 
         this.classify = classify;
