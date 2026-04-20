@@ -1,9 +1,6 @@
 package me.my_library_system.domain.reservation;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +15,7 @@ public class Reservation {
     private Long id;
     private Long bookInfoId;
     private Long memberId;
+    @Enumerated(EnumType.STRING)
     private ReservationStatus status;
     private LocalDateTime reservationDate;
     private LocalDateTime reservationCanceledDate;

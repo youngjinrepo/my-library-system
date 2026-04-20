@@ -1,9 +1,6 @@
 package me.my_library_system.domain.loan;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +19,7 @@ public class Loan {
     private LocalDateTime loanDate;
     private LocalDateTime dueDate;
     private int renewalCnt;
+    @Enumerated(EnumType.STRING)
     private LoanStatus status;
 
     public static Loan createLoan(Long memberId, Long bookId, int renewalCnt, long dueDaysCnt) {

@@ -27,8 +27,9 @@ public class BookInfo {
     private String marc;
     private String classify;
     boolean isAdult;
+    @Enumerated(EnumType.STRING)
     private BookInfoStatus status;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "bookInfo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BookItem> bookItems = new ArrayList<>();
 
     private BookInfo(String title, String volume, String author, String publisher, String ISBN, boolean isAdult) {
@@ -57,7 +58,7 @@ public class BookInfo {
         }
 
         for (int i = 0; i < bookCnt; i++) {
-            this.bookItems.add(createBookItem(new BookItemRegisterRequest(this.id, this.title, this.volume, this.author, classify, startSequence+i, i+1, code)));
+            this.bookItems.add(createBookItem(new BookItemRegisterRequest(this, this.title, this.volume, this.author, classify, startSequence+i, i+1, code)));
         }
 
         this.classify = classify;

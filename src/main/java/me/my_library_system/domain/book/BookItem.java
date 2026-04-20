@@ -16,15 +16,16 @@ public class BookItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
-    private Long BookInfoId;
+    private BookInfo bookInfo;
     private String code;
     private String callNo;
+    @Enumerated(EnumType.STRING)
     private BookItemStatus status;
     private String location;
 
     public static BookItem createBookItem(BookItemRegisterRequest request) {
         BookItem bookItem = new BookItem();
-        bookItem.setBookInfoId(request.bookInfoId());
+        bookItem.setBookInfo(request.bookInfo());
         bookItem.setCode(generateCode(request.code(), request.bookNo()));
         bookItem.setCallNo(generateCallNo(request.classify(), request.author(), request.volume(), request.bookCnt()));
         bookItem.setStatus(BookItemStatus.CATALOGING);

@@ -19,6 +19,7 @@ public class Member {
     private int age;
     private String address;
     private String ci;
+    @Enumerated(EnumType.STRING)
     private MemberGrade grade;
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;
