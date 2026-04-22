@@ -7,6 +7,7 @@ import me.my_library_system.domain.loan.LoanRepository;
 import me.my_library_system.domain.loan.LoanStatus;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -33,5 +34,10 @@ public class LoanPersistenceAdapter implements LoanRepository {
     @Override
     public int countByMemberIdAndStatus(Long id, LoanStatus status) {
         return loanJpaRepository.countByMemberIdAndStatus(id, status);
+    }
+
+    @Override
+    public int countOverdueLoans(Long memberId, LocalDateTime date) {
+        return loanJpaRepository.countByMemberIdAndStatusAndDueDateBefore(memberId, LoanStatus.LOAN, date);
     }
 }

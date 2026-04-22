@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -30,7 +31,12 @@ class LoanJpaRepositoryTest {
 
     @Test
     void 이용자id로_대출건수_조회() {
-        Assertions.assertThat(loanJpaRepository.countByMemberIdAndStatus(1L, LoanStatus.LOAN)).isEqualTo(0);
+        assertThat(loanJpaRepository.countByMemberIdAndStatus(1L, LoanStatus.LOAN)).isEqualTo(0);
+    }
+
+    @Test
+    void 이용자id로_연체중인_도서_조회(){
+        assertThat(loanJpaRepository.countByMemberIdAndStatusAndDueDateBefore(1L, LoanStatus.LOAN, LocalDateTime.now()));
     }
 
 }

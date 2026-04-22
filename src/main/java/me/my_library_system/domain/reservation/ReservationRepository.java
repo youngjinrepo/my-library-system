@@ -9,5 +9,5 @@ public interface ReservationRepository {
 
     List<Reservation> findByMemberIdAndStatus(Long memberId, ReservationStatus reservationStatus);
 
-    int countByMemberId(Long memberId, ReservationStatus reservationStatus, LocalDateTime start, LocalDateTime end);
+    int countCancellationSince(Long memberId, int cancellationCooldown, LocalDateTime now);
 }
