@@ -8,6 +8,7 @@ import me.my_library_system.domain.loan.Loan;
 import me.my_library_system.domain.member.MemberFixture;
 import me.my_library_system.domain.member.MemberRepository;
 import me.my_library_system.domain.loan.LoanRepository;
+import me.my_library_system.domain.reservation.ReservationRepository;
 import org.junit.jupiter.api.Test;
 
 import java.time.Clock;
@@ -16,13 +17,14 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
-public class LoanServiceTest {
+class LoanServiceTest {
     MemberRepository memberRepository = mock(MemberRepository.class);
     LibraryRepository libraryRepository = mock(LibraryRepository.class);
     BookItemRepository bookItemRepository = mock(BookItemRepository.class);
     LoanRepository loanRepository = mock(LoanRepository.class);
+    ReservationRepository reservationRepository = mock(ReservationRepository.class);
     Clock clock = Clock.systemDefaultZone();
-    LoanService loanService = new LoanService(memberRepository, libraryRepository, bookItemRepository, loanRepository, clock);
+    LoanService loanService = new LoanService(memberRepository, libraryRepository, bookItemRepository, loanRepository,reservationRepository, clock);
 
     @Test
     void 대출_성공() {

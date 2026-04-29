@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import me.my_library_system.adapter.out.persistence.jpa.BookInfoJpaRepository;
 import me.my_library_system.domain.book.BookInfo;
 import me.my_library_system.domain.book.BookInfoRepository;
+import me.my_library_system.domain.book.BookItem;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -27,4 +28,5 @@ public class BookInfoPersistenceAdapter implements BookInfoRepository {
     public void deleteById(Long bookInfoId) {
         bookInfoJpaRepository.deleteById(bookInfoId);
     }
+
 }

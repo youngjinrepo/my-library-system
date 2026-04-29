@@ -20,4 +20,6 @@ public interface ReservationJpaRepository extends JpaRepository<Reservation, Lon
                 AND r.reservationCanceledDate BETWEEN :start AND :end
         """)
     int countByMemberId(Long memberId, ReservationStatus reservationStatus, LocalDateTime start, LocalDateTime end);
+
+    int countByBookInfoIdAndStatus(Long bookInfoId, ReservationStatus reservationStatus);
 }

@@ -35,4 +35,12 @@ class ReservationJpaRepositoryTest {
         int cancelCount = reservationJpaRepository.countByMemberId(1L, ReservationStatus.CANCELLED, LocalDateTime.MAX, LocalDateTime.MIN);
         assertThat(cancelCount).isEqualTo(1);
     }
+
+    @Test
+    void 책정보로_예약내역_조회() {
+        reservationJpaRepository.save(ReservationFixture.normalReservation());
+
+        int cnt = reservationJpaRepository.countByBookInfoIdAndStatus(1L, ReservationStatus.ACTIVE);
+        assertThat(cnt).isEqualTo(1);
+    }
 }

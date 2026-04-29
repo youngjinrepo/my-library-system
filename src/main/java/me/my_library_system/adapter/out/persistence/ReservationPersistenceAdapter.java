@@ -29,4 +29,9 @@ public class ReservationPersistenceAdapter implements ReservationRepository {
     public int countCancellationSince(Long memberId, int cancellationCooldown, LocalDateTime end) {
         return reservationJpaRepository.countByMemberId(memberId, ReservationStatus.CANCELLED, end.minusDays(cancellationCooldown), end);
     }
+
+    @Override
+    public int countByBookInfoIdAndStatus(Long bookInfoId, ReservationStatus reservationStatus) {
+        return reservationJpaRepository.countByBookInfoIdAndStatus(bookInfoId, reservationStatus);
+    }
 }

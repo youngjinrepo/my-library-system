@@ -1,6 +1,7 @@
 package me.my_library_system.application.loan;
 
 import lombok.RequiredArgsConstructor;
+import me.my_library_system.domain.book.BookInfoRepository;
 import me.my_library_system.domain.loan.Loan;
 import me.my_library_system.domain.library.Policy;
 import me.my_library_system.domain.book.BookItem;
@@ -10,6 +11,8 @@ import me.my_library_system.domain.book.BookItemRepository;
 import me.my_library_system.domain.library.LibraryRepository;
 import me.my_library_system.domain.loan.LoanRepository;
 import me.my_library_system.domain.member.MemberRepository;
+import me.my_library_system.domain.reservation.ReservationRepository;
+import me.my_library_system.domain.reservation.ReservationStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +26,7 @@ public class LoanService {
     private final LibraryRepository libraryRepository;
     private final BookItemRepository bookItemRepository;
     private final LoanRepository loanRepository;
+    private final ReservationRepository reservationRepository;
     private final Clock clock;
 
     @Transactional
@@ -40,6 +44,7 @@ public class LoanService {
 
         bookItem.loan();
         loanRepository.save(Loan.createLoan(member.getId(), bookItem.getId(), policy.dueDays(), clock));
+        bookItemRepository.save(bookItem);
     }
 
     @Transactional
@@ -47,9 +52,19 @@ public class LoanService {
         Loan loan = loanRepository.findByMemberIdAndBookId(memberId, bookItemId)
                 .orElseThrow(() -> new IllegalArgumentException("조회되는 대출 내역이 없습니다."));
         Policy policy = libraryRepository.getLibrary().getPolicy();
-        //예약 정보가 있다면 막는다.
+
+        BookItem bookItem = bookItemRepository.findById(bookItemId).orElseThrow();
+        Long bookInfoId = bookItem.getBookInfo().getId();
+
+        int reservationCount = reservationRepository.countByBookInfoIdAndStatus(bookInfoId, ReservationStatus.ACTIVE);
+        if (reservationCount > 0) {
+            throw new IllegalStateException("예약중인 이용자가 있어 밥납연기 할 수 없습니다.");
+        }
+
         policy.validateMaxRenewalCount(loan.getRenewalCnt());
         loan.increaseRenewalCnt();
         loan.delayDueDate(policy.returnDelayDays());
+
+        loanRepository.save(loan);
     }
 }

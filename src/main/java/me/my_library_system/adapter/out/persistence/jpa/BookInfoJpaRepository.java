@@ -1,6 +1,7 @@
 package me.my_library_system.adapter.out.persistence.jpa;
 
 import me.my_library_system.domain.book.BookInfo;
+import me.my_library_system.domain.book.BookItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

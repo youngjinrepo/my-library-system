@@ -9,4 +9,5 @@ public interface BookInfoRepository{
     BookInfo save(BookInfo bookInfo);
 
     void deleteById(Long bookInfoId);
+
 }
