@@ -1,11 +1,11 @@
 package me.my_library_system.domain.loan;
 
-import me.my_library_system.domain.library.Policy;
+import java.time.Clock;
 
 public class LoanFixture {
 
-    public static Loan createLoan() {
-        return Loan.createLoan(1L, 1L ,3,10);
+    public static Loan createLoan(Clock clock) {
+        return Loan.createLoan(1L, 1L ,3, clock);
     }
 
 }

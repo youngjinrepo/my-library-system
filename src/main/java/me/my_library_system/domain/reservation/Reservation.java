@@ -1,14 +1,11 @@
 package me.my_library_system.domain.reservation;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Setter(AccessLevel.PROTECTED)
 @Getter
 public class Reservation {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

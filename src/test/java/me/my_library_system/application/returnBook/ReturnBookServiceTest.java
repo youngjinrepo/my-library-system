@@ -11,6 +11,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -28,7 +29,7 @@ class ReturnBookServiceTest {
     @Test
     void 반납_테스트() {
         given(loanRepository.findById(1L))
-                .willReturn(Optional.of(LoanFixture.createLoan()));
+                .willReturn(Optional.of(LoanFixture.createLoan(Clock.systemDefaultZone())));
         given(bookItemRepository.findById(1L))
                 .willReturn(Optional.of(BookFixture.createLoanBookItem()));
         given(memberRepository.findById(1L))

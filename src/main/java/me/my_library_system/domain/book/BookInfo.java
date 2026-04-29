@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,6 @@ import static me.my_library_system.domain.book.BookItem.*;
 
 @Entity
 @Getter
-@Setter(AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BookInfo {
     @Id
@@ -23,7 +21,7 @@ public class BookInfo {
     private String volume;
     private String author;
     private String publisher;
-    private String ISBN;
+    private String isbn;
     private String marc;
     private String classify;
     boolean isAdult;
@@ -32,18 +30,18 @@ public class BookInfo {
     @OneToMany(mappedBy = "bookInfo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BookItem> bookItems = new ArrayList<>();
 
-    private BookInfo(String title, String volume, String author, String publisher, String ISBN, boolean isAdult) {
+    private BookInfo(String title, String volume, String author, String publisher, String isbn, boolean isAdult) {
         this.title = title;
         this.volume = volume;
         this.author = author;
         this.publisher = publisher;
-        this.ISBN = ISBN;
+        this.isbn = isbn;
         this.isAdult = isAdult;
         status=BookInfoStatus.DRAFT;
     }
 
-    public static BookInfo acquireBook(String title, String volume, String author, String publisher, String ISBN, boolean isAdult){
-        return new BookInfo(title, volume, author, publisher, ISBN, isAdult);
+    public static BookInfo acquireBook(String title, String volume, String author, String publisher, String isbn, boolean isAdult){
+        return new BookInfo(title, volume, author, publisher, isbn, isAdult);
     }
 
     public void cataloging(String classify, int bookCnt, int startSequence,String code) {
@@ -73,10 +71,7 @@ public class BookInfo {
             throw new IllegalArgumentException("배가 위치를 입력 해야합니다.");
         }
         this.status = BookInfoStatus.COMPLETED;
-        this.bookItems.forEach(bookItem -> {
-            bookItem.setStatus(BookItemStatus.SHELVING);
-            bookItem.setLocation(location);
-        });
+        this.bookItems.forEach(bookItem ->  bookItem.shelving(location));
     }
 
     public void validateRemovable(){
@@ -87,5 +82,9 @@ public class BookInfo {
         });
 
         //예약 도입되면 예약 내역에서 제거
+    }
+
+    void assignId(Long id){
+        this.id = id;
     }
 }

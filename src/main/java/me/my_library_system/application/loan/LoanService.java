@@ -13,6 +13,8 @@ import me.my_library_system.domain.member.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Clock;
+
 @Service
 @RequiredArgsConstructor
 public class LoanService {
@@ -21,6 +23,7 @@ public class LoanService {
     private final LibraryRepository libraryRepository;
     private final BookItemRepository bookItemRepository;
     private final LoanRepository loanRepository;
+    private final Clock clock;
 
     @Transactional
     public void loan(Long memberId, Long bookItemId){
@@ -35,7 +38,8 @@ public class LoanService {
         int loanCnt = loanRepository.countByMemberIdAndStatus(member.getId(), LoanStatus.LOAN);
         policy.validateLoanCount(loanCnt);
 
-        loanRepository.save(Loan.createLoan(member.getId(), bookItem.getId(), policy.returnRenewalCnt(), policy.dueDays()));
+        bookItem.loan();
+        loanRepository.save(Loan.createLoan(member.getId(), bookItem.getId(), policy.dueDays(), clock));
     }
 
     @Transactional

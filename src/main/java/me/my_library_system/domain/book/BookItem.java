@@ -1,15 +1,12 @@
 package me.my_library_system.domain.book;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 @Entity
 @Getter
 @ToString
-@Setter(AccessLevel.PROTECTED)
 public class BookItem {
 
     @Id
@@ -25,10 +22,10 @@ public class BookItem {
 
     public static BookItem createBookItem(BookItemRegisterRequest request) {
         BookItem bookItem = new BookItem();
-        bookItem.setBookInfo(request.bookInfo());
-        bookItem.setCode(generateCode(request.code(), request.bookNo()));
-        bookItem.setCallNo(generateCallNo(request.classify(), request.author(), request.volume(), request.bookCnt()));
-        bookItem.setStatus(BookItemStatus.CATALOGING);
+        bookItem.bookInfo = request.bookInfo();
+        bookItem.code = generateCode(request.code(), request.bookNo());
+        bookItem.callNo = generateCallNo(request.classify(), request.author(), request.volume(), request.bookCnt());
+        bookItem.status = BookItemStatus.CATALOGING;
         return bookItem;
     }
 
@@ -53,5 +50,14 @@ public class BookItem {
 
     public void returnBook() {
         this.status=BookItemStatus.SHELVING;
+    }
+
+    public void loan() {
+        this.status=BookItemStatus.LOANED;
+    }
+
+    public void shelving(String location) {
+        this.status =  BookItemStatus.SHELVING;
+        this.location = location;
     }
 }

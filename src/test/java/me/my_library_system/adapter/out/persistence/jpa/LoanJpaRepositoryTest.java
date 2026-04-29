@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -21,7 +22,7 @@ class LoanJpaRepositoryTest {
     @Test
     void 이용자ID와_책ID로_대출정보를_조회한다() {
 
-        loanJpaRepository.save(LoanFixture.createLoan());
+        loanJpaRepository.save(LoanFixture.createLoan(Clock.systemDefaultZone()));
         Optional<Loan> loan = loanJpaRepository.findByMemberIdAndBookId(1L, 1L);
 
         assertThat(loan).isPresent();

@@ -16,10 +16,9 @@ class BookInfoTest {
     @Test
     void catalogingTest() {
         BookInfo harryPotter = BookFixture.createBookInfo();
-        harryPotter.setId(1L);
         harryPotter.cataloging("800", 3, 1, "CD");
         assertThat(harryPotter.getStatus()).isEqualTo(BookInfoStatus.CATALOGING);
-        assertThat(harryPotter.getBookItems().size()).isGreaterThan(0);
+        assertThat(harryPotter.getBookItems()).hasSize(3);
     }
 
     @Test

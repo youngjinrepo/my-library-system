@@ -1,15 +1,13 @@
 package me.my_library_system.domain.loan;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter(AccessLevel.PROTECTED)
 public class Loan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,14 +20,16 @@ public class Loan {
     @Enumerated(EnumType.STRING)
     private LoanStatus status;
 
-    public static Loan createLoan(Long memberId, Long bookId, int renewalCnt, long dueDaysCnt) {
+    public static Loan createLoan(Long memberId, Long bookId, long dueDaysCnt, Clock clock) {
+        LocalDateTime now = LocalDateTime.now(clock);
+
         Loan loan = new Loan();
-        loan.setMemberId(memberId);
-        loan.setBookId(bookId);
-        loan.setLoanDate(LocalDateTime.now());
-        loan.setDueDate(LocalDateTime.now().plusDays(dueDaysCnt));
-        loan.setRenewalCnt(renewalCnt);
-        loan.setStatus(LoanStatus.LOAN);
+        loan.memberId =memberId;
+        loan.bookId = bookId;
+        loan.loanDate = now;
+        loan.dueDate = now.plusDays(dueDaysCnt);
+        loan.renewalCnt = 0;
+        loan.status = LoanStatus.LOAN;
         return loan;
     }
 
@@ -38,7 +38,7 @@ public class Loan {
     }
 
     public void delayDueDate(int days) {
-        this.dueDate = LocalDateTime.now().plusDays(days);
+        this.dueDate = this.dueDate.plusDays(days);
     }
 
     public void returnLoan() {

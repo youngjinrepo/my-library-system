@@ -4,13 +4,13 @@ import me.my_library_system.domain.book.*;
 import me.my_library_system.domain.library.Library;
 import me.my_library_system.domain.library.LibraryFixture;
 import me.my_library_system.domain.library.LibraryRepository;
-import me.my_library_system.domain.library.Policy;
 import me.my_library_system.domain.loan.Loan;
 import me.my_library_system.domain.member.MemberFixture;
 import me.my_library_system.domain.member.MemberRepository;
 import me.my_library_system.domain.loan.LoanRepository;
 import org.junit.jupiter.api.Test;
 
+import java.time.Clock;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -21,7 +21,8 @@ public class LoanServiceTest {
     LibraryRepository libraryRepository = mock(LibraryRepository.class);
     BookItemRepository bookItemRepository = mock(BookItemRepository.class);
     LoanRepository loanRepository = mock(LoanRepository.class);
-    LoanService loanService = new LoanService(memberRepository, libraryRepository, bookItemRepository, loanRepository);
+    Clock clock = Clock.systemDefaultZone();
+    LoanService loanService = new LoanService(memberRepository, libraryRepository, bookItemRepository, loanRepository, clock);
 
     @Test
     void 대출_성공() {

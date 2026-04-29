@@ -4,13 +4,12 @@ public class BookFixture {
 
     public static BookInfo createBookInfo() {
         BookInfo bookInfo = BookInfo.acquireBook("해리 포터와 마법사의 돌 1", "1권", "J.K. 롤링 저자", "문학수첩", "9791193790403", false);
-        bookInfo.setId(1L);
+        bookInfo.assignId(1L);
         return bookInfo;
     }
 
     public static BookInfo createCatalogingBookInfo() {
         BookInfo harryPotter = createBookInfo();
-        harryPotter.setId(1L);
         harryPotter.cataloging("800", 3, 1, "CD");
         return harryPotter;
     }
@@ -22,9 +21,9 @@ public class BookFixture {
     }
 
     public static BookItem createLoanBookItem() {
-        BookItem bookItem = new BookItem();
-        bookItem.setStatus(BookItemStatus.LOANED);
-
+        BookInfo shelvingBookInfo = createShelvingBookInfo();
+        BookItem bookItem = shelvingBookInfo.getBookItems().getFirst();
+        bookItem.loan();
         return bookItem;
     }
 

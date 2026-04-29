@@ -4,14 +4,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 
 @Entity
-@Setter(AccessLevel.PROTECTED)
 @Getter
 public class ReturnBook {
 
@@ -24,10 +22,10 @@ public class ReturnBook {
 
     public static ReturnBook createReturnBook(Long loanId,  Long bookId, Long memberId, LocalDateTime returnDate) {
         ReturnBook returnBook = new ReturnBook();
-        returnBook.setLoanId(loanId);
-        returnBook.setBookId(bookId);
-        returnBook.setMemberId(memberId);
-        returnBook.setReturnDate(returnDate);
+        returnBook.loanId = loanId;
+        returnBook.bookId = bookId;
+        returnBook.memberId = memberId;
+        returnBook.returnDate = returnDate;
         return returnBook;
     }
 }
