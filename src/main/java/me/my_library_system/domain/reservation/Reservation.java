@@ -17,13 +17,21 @@ public class Reservation {
     private LocalDateTime reservationDate;
     private LocalDateTime reservationCanceledDate;
 
-    public static Reservation createReservation(Long bookInfoId, Long memberId) {
+    public static Reservation createReservation(Long bookInfoId, Long memberId, ReservationPolicy policy, int memberReservationCnt) {
+        validate(policy, memberReservationCnt);
+
         Reservation reservation = new Reservation();
         reservation.bookInfoId = bookInfoId;
         reservation.memberId = memberId;
         reservation.reservationDate = LocalDateTime.now();
         reservation.status = ReservationStatus.ACTIVE;
         return reservation;
+    }
+
+    private static void validate(ReservationPolicy policy, int memberReservationCnt) {
+        if (memberReservationCnt >= policy.maxReservationCnt()) {
+            throw new IllegalStateException("최대 예약 가능 건수 (" + policy.maxReservationCnt() + ")");
+        }
     }
 
     public void canceledReservation() {

@@ -17,9 +17,9 @@ public record Policy(int maxLoanCnt, int returnRenewalCnt, int dueDays, int retu
         }
     }
 
-    public void validateMaxReservationCnt(int reservationCnt) {
-        if (reservationCnt >= maxReservationCnt) {
-            throw new IllegalStateException("최대 예약 가능 건수 (" + maxReservationCnt + ")");
-        }
-    }
+//    public void validateMaxReservationCnt(int reservationCnt) {
+//        if (reservationCnt >= maxReservationCnt) {
+//            throw new IllegalStateException("최대 예약 가능 건수 (" + maxReservationCnt + ")");
+//        }
+//    }
 }

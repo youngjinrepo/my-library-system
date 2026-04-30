@@ -12,6 +12,10 @@ ADR (Architectural Desision Records) : 의사 결정 기록
 - 상황 : 반납 예정일을 매번 계산할 경우 다수 이용자 조회 시 많은 시간 소요
 - 결정 : 이용자의 남은 대출일수(or연체일수)는 매일 자정에 계산
 ---
-#### Exception
+#### Exception 상세 관리
 - 상황 : 예외를 식별해내기 어려움, 예외 메시지를 보고 식별 해야 함
 - 결정 : 비즈니스 상황에 맞춘 Exception 분류 적용
+---
+#### 상위 Policy 추상화 제거
+- 상황 : 정책이 늘어나며 Policy에 다 관리할 경우, Service가 비대해지고 각 Entity에서 받자니 의존성이 높아짐
+- 결정 : 각 domain 별 policy로 관리
