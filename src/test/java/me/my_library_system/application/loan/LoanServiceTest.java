@@ -35,7 +35,7 @@ class LoanServiceTest {
         given(bookItemRepository.findById(1L))
                 .willReturn(Optional.of(firstBook));
         given(libraryRepository.getLibrary())
-                .willReturn(new Library(1L, "12", "13", LibraryFixture.creatrPolicy()));
+                .willReturn(LibraryFixture.defaultLibrary());
 
 
         loanService.loan(1L , 1L);
@@ -52,7 +52,7 @@ class LoanServiceTest {
         given(bookItemRepository.findById(1L))
                 .willReturn(Optional.of(firstBook));
         given(libraryRepository.getLibrary())
-                .willReturn(new Library(1L, "12", "13", LibraryFixture.creatrPolicy()));
+                .willReturn(LibraryFixture.defaultLibrary());
 
 
         assertThatThrownBy(() -> loanService.loan(1L , 1L))
@@ -69,7 +69,7 @@ class LoanServiceTest {
         given(bookItemRepository.findById(1L))
                 .willReturn(Optional.of(firstBook));
         given(libraryRepository.getLibrary())
-                .willReturn(new Library(1L, "12", "13", LibraryFixture.creatrPolicy()));
+                .willReturn(LibraryFixture.defaultLibrary());
 
 
         assertThatThrownBy(() -> loanService.loan(1L , 1L))
@@ -86,7 +86,7 @@ class LoanServiceTest {
         given(bookItemRepository.findById(1L))
                 .willReturn(Optional.of(firstBook));
         given(libraryRepository.getLibrary())
-                .willReturn(new Library(1L, "12", "13", LibraryFixture.creatrBadPolicy()));
+                .willReturn(LibraryFixture.defaultLibrary());
 
 
         assertThatThrownBy(() -> loanService.loan(1L , 1L))

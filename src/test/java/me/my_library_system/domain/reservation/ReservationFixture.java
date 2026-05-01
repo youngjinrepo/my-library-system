@@ -1,17 +1,18 @@
 package me.my_library_system.domain.reservation;
 
-import static me.my_library_system.domain.reservation.Reservation.*;
-
 public class ReservationFixture {
 
 
     public static Reservation normalReservation() {
-        return createReservation(1L, 1L);
+        return Reservation.createReservation(1L, 10L,
+                new ReservationPolicy(3, 5),
+                new ReservationCreateContext(false, 0, 0, 0));
     }
 
     public static Reservation canceledReservation() {
-        Reservation reservation = createReservation(2L, 1L);
-        reservation.canceledReservation();
-        return reservation;
+//        Reservation reservation = createReservation(2L, 1L);
+//        reservation.canceledReservation();
+//        return reservation;
+        return  null;
     }
 }

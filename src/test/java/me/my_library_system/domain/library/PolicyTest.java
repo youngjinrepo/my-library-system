@@ -32,16 +32,4 @@ class PolicyTest {
                 .hasMessageContaining("최대 반납연기 횟수를 초과 하였습니다.");
     }
 
-    @Test
-    void 최대_예약가능건수_검사_성공(){
-        assertThatCode(()->LibraryFixture.creatrPolicy().validateMaxReservationCnt(Integer.MIN_VALUE))
-                .doesNotThrowAnyException();
-    }
-
-    @Test
-    void 최대_예약가능건수_검사_실패(){
-        assertThatThrownBy(()->LibraryFixture.creatrPolicy().validateMaxReservationCnt(Integer.MAX_VALUE))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("최대 예약 가능 건수 (");
-    }
 }

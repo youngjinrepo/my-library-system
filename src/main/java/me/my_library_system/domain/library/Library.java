@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import me.my_library_system.domain.reservation.ReservationPolicy;
 
 @Getter
 @Entity
@@ -20,4 +21,7 @@ public class Library {
 
     @Embedded
     private Policy policy;
+
+
+    private ReservationPolicy reservationPolicy;
 }

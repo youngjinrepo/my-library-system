@@ -2,6 +2,10 @@ package me.my_library_system.domain.reservation;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import me.my_library_system.domain.loan.exception.OverDueLoanException;
+import me.my_library_system.domain.reservation.exception.DuplicatedReservationException;
+import me.my_library_system.domain.reservation.exception.ReservationCooldownException;
+import me.my_library_system.domain.reservation.exception.ReservationLimitExceededException;
 
 import java.time.LocalDateTime;
 
@@ -17,8 +21,9 @@ public class Reservation {
     private LocalDateTime reservationDate;
     private LocalDateTime reservationCanceledDate;
 
-    public static Reservation createReservation(Long bookInfoId, Long memberId, ReservationPolicy policy, int memberReservationCnt) {
-        validate(policy, memberReservationCnt);
+    public static Reservation createReservation(Long bookInfoId, Long memberId,
+                                                ReservationPolicy policy, ReservationCreateContext context) {
+        validate(policy, context);
 
         Reservation reservation = new Reservation();
         reservation.bookInfoId = bookInfoId;
@@ -28,9 +33,19 @@ public class Reservation {
         return reservation;
     }
 
-    private static void validate(ReservationPolicy policy, int memberReservationCnt) {
-        if (memberReservationCnt >= policy.maxReservationCnt()) {
-            throw new IllegalStateException("최대 예약 가능 건수 (" + policy.maxReservationCnt() + ")");
+    private static void validate(ReservationPolicy policy, ReservationCreateContext context) {
+        if (context.hasSameReserve()) {
+            throw new DuplicatedReservationException();
+        }
+        if (context.reservationCnt() >= policy.maxReservationCnt()) {
+            throw new ReservationLimitExceededException(policy.maxReservationCnt());
+        }
+        if (context.cancellationCnt() > 0) {
+            throw new ReservationCooldownException(policy.cancellationCooldown());
+        }
+        if (context.overdueCnt() > 0) {
+            throw new OverDueLoanException("연체중인 도서가 있어 예약 할 수 없습니다.");
+
         }
     }
 

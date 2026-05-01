@@ -6,6 +6,7 @@ import me.my_library_system.domain.book.*;
 import me.my_library_system.domain.library.Library;
 import me.my_library_system.domain.library.LibraryFixture;
 import me.my_library_system.domain.library.LibraryRepository;
+import me.my_library_system.domain.reservation.ReservationPolicy;
 import org.junit.jupiter.api.Test;
 import java.util.Optional;
 
@@ -19,14 +20,17 @@ class BookCatalogingServiceTest {
     LibraryRepository libraryRepository = mock(LibraryRepository.class);
     BookCatalogingService bookCatalogingService = new BookCatalogingService(bookInfoRepository, customSequenceRepository, libraryRepository);
 
+    Library library = LibraryFixture.defaultLibrary();
+
     @Test
     void 편목_작업_성공() {
         given(bookInfoRepository.findById(1L))
                 .willReturn(Optional.of(BookFixture.createBookInfo()));
         given(customSequenceRepository.findByNameWithLock("BOOK_CODE"))
                 .willReturn(Optional.of(new CustomSequence("BOOK_CODE", 0)));
+
         given(libraryRepository.getLibrary())
-                .willReturn(new Library(1L, "1","2", LibraryFixture.creatrPolicy()));
+                .willReturn(library);
 
         bookCatalogingService.processCataloging(1L, "843", 3);
 
@@ -40,7 +44,7 @@ class BookCatalogingServiceTest {
         given(customSequenceRepository.findByNameWithLock("BOOK_CODE"))
                 .willReturn(Optional.of(new CustomSequence("BOOK_CODE", 0)));
         given(libraryRepository.getLibrary())
-                .willReturn(new Library(1L, "1","2", LibraryFixture.creatrPolicy()));
+                .willReturn(library);
 
         assertThatThrownBy(() -> bookCatalogingService.processCataloging(1L, "843", 3))
                 .isInstanceOf(RuntimeException.class)
@@ -54,7 +58,7 @@ class BookCatalogingServiceTest {
         given(customSequenceRepository.findByNameWithLock("BOOK_CODE"))
                 .willReturn(Optional.of(new CustomSequence("BOOK_CODE", 0)));
         given(libraryRepository.getLibrary())
-                .willReturn(new Library(1L, "1","2", LibraryFixture.creatrPolicy()));
+                .willReturn(library);
 
         assertThatThrownBy(() -> bookCatalogingService.processCataloging(1L, "843", 3))
                 .isInstanceOf(IllegalStateException.class)
@@ -68,7 +72,7 @@ class BookCatalogingServiceTest {
         given(customSequenceRepository.findByNameWithLock("BOOK_CODE"))
                 .willReturn(Optional.of(new CustomSequence("BOOK_CODE", 0)));
         given(libraryRepository.getLibrary())
-                .willReturn(new Library(1L, "1","2", LibraryFixture.creatrPolicy()));
+                .willReturn(library);
 
         assertThatThrownBy(() -> bookCatalogingService.processCataloging(1L, "843", 0))
                 .isInstanceOf(IllegalArgumentException.class)
