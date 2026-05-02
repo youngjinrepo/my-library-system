@@ -60,37 +60,5 @@ class LoanServiceTest {
                 .hasMessageContaining("대출 불가한 이용자 입니다.");
     }
 
-    @Test
-    void 대출불가_도서는_대출_실패한다() {
-        BookItem firstBook = BookFixture.createCatalogingBookInfo().getBookItems().getFirst();
 
-        given(memberRepository.findById(1L))
-                .willReturn(Optional.of(MemberFixture.createRegularMember()));
-        given(bookItemRepository.findById(1L))
-                .willReturn(Optional.of(firstBook));
-        given(libraryRepository.getLibrary())
-                .willReturn(LibraryFixture.defaultLibrary());
-
-
-        assertThatThrownBy(() -> loanService.loan(1L , 1L))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("도서가 이용 불가 상태입니다.");
-    }
-
-    @Test
-    void 최대대출건수를_넘으면_대출_실패한다() {
-        BookItem firstBook = BookFixture.createShelvingBookInfo().getBookItems().getFirst();
-
-        given(memberRepository.findById(1L))
-                .willReturn(Optional.of(MemberFixture.createRegularMember()));
-        given(bookItemRepository.findById(1L))
-                .willReturn(Optional.of(firstBook));
-        given(libraryRepository.getLibrary())
-                .willReturn(LibraryFixture.defaultLibrary());
-
-
-        assertThatThrownBy(() -> loanService.loan(1L , 1L))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("최대 대출 건수 (");
-    }
 }

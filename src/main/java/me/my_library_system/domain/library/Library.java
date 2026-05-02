@@ -6,7 +6,10 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import me.my_library_system.domain.loan.LoanPolicy;
 import me.my_library_system.domain.reservation.ReservationPolicy;
+
+import java.time.LocalDate;
 
 @Getter
 @Entity
@@ -20,8 +23,14 @@ public class Library {
     private String code = "LDL";
 
     @Embedded
-    private Policy policy;
-
-
     private ReservationPolicy reservationPolicy;
+    @Embedded
+    private LoanPolicy loanPolicy;
+
+    @Embedded
+    private OperatingSchedule operatingSchedule;
+
+    public LocalDate calculateDueDate(LocalDate baseDate, int loanDays) {
+        return operatingSchedule.calculateDueDate(baseDate, loanDays);
+    }
 }

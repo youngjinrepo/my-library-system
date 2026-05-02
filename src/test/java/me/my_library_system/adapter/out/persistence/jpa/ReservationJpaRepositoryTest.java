@@ -24,7 +24,7 @@ class ReservationJpaRepositoryTest {
     void 예약_내역_조회_서비스_정상(){
         reservationJpaRepository.save(ReservationFixture.normalReservation());
 
-        List<Reservation> reservations = reservationJpaRepository.findByMemberIdAndStatus(1L, ReservationStatus.ACTIVE);
+        List<Reservation> reservations = reservationJpaRepository.findByMemberIdAndStatus(10L, ReservationStatus.ACTIVE);
         assertThat(reservations).hasSize(1);
     }
 
@@ -32,7 +32,7 @@ class ReservationJpaRepositoryTest {
     void 예약_취소_내역_조회( ){
         reservationJpaRepository.save(ReservationFixture.canceledReservation());
 
-        int cancelCount = reservationJpaRepository.countByMemberId(1L, ReservationStatus.CANCELLED, LocalDateTime.MAX, LocalDateTime.MIN);
+        int cancelCount = reservationJpaRepository.countByMemberId(10L, ReservationStatus.CANCELLED, LocalDateTime.MAX, LocalDateTime.MIN);
         assertThat(cancelCount).isEqualTo(1);
     }
 

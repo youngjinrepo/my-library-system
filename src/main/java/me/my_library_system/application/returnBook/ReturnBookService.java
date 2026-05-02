@@ -29,13 +29,13 @@ public class ReturnBookService {
     @Transactional
     public void returnBook(Long loanId, LocalDateTime returnDateTime) {
         Loan loan = loanRepository.findById(loanId).orElseThrow();
-        BookItem bookItem = bookItemRepository.findById(loan.getBookId()).orElseThrow();
+        BookItem bookItem = bookItemRepository.findById(loan.getBookItemId()).orElseThrow();
         Member member = memberRepository.findById(loan.getMemberId()).orElseThrow();
 
         loan.returnLoan();
         bookItem.returnBook();
 
-        LocalDate dueDate = loan.getDueDate().toLocalDate();
+        LocalDate dueDate = loan.getDueDate();
         LocalDate returnDate = returnDateTime.toLocalDate();
 
         if (dueDate.isBefore(returnDate)) {
@@ -43,7 +43,7 @@ public class ReturnBookService {
             member.suspend(overdue);
         }
 
-        ReturnBook returnBook = ReturnBook.createReturnBook(loan.getId(), loan.getBookId(), loan.getMemberId(), returnDateTime);
+        ReturnBook returnBook = ReturnBook.createReturnBook(loan.getId(), loan.getBookItemId(), loan.getMemberId(), returnDateTime);
 
         returnBookRepository.save(returnBook);
         bookItemRepository.save(bookItem);

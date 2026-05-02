@@ -1,9 +1,12 @@
 package me.my_library_system.domain.reservation;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import me.my_library_system.domain.loan.exception.OverDueLoanException;
 import me.my_library_system.domain.reservation.exception.DuplicatedReservationException;
+import me.my_library_system.domain.reservation.exception.IllegalReservationStateException;
 import me.my_library_system.domain.reservation.exception.ReservationCooldownException;
 import me.my_library_system.domain.reservation.exception.ReservationLimitExceededException;
 
@@ -11,6 +14,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Reservation {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -50,6 +54,9 @@ public class Reservation {
     }
 
     public void canceledReservation() {
+        if (this.status != ReservationStatus.ACTIVE) {
+            throw new IllegalReservationStateException(this.status, "취소");
+        }
         this.status = ReservationStatus.CANCELLED;
         this.reservationCanceledDate = LocalDateTime.now();
     }

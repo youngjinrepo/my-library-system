@@ -7,6 +7,7 @@ import me.my_library_system.domain.reservation.*;
 import org.junit.jupiter.api.Test;
 
 import java.time.Clock;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -29,7 +30,7 @@ class ReservationServiceTest {
                 .willReturn(List.of());
         given(reservationRepository.countCancellationSince(10L, 3, LocalDateTime.now(clock)))
                 .willReturn(0);
-        given(loanRepository.countOverdueLoans(10L, LocalDateTime.now(clock)))
+        given(loanRepository.countOverdueLoans(10L, LocalDate.now(clock)))
                 .willReturn(0);
 
         reservationService.reservationProcess(1L, 10L);

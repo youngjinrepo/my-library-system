@@ -3,6 +3,7 @@ package me.my_library_system.domain.book;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.ToString;
+import me.my_library_system.domain.book.exception.IllegalBookStateException;
 
 @Entity
 @Getter
@@ -59,5 +60,11 @@ public class BookItem {
     public void shelving(String location) {
         this.status =  BookItemStatus.SHELVING;
         this.location = location;
+    }
+
+    public void canLoan() {
+        if (!this.isAvailable()) {
+            throw new IllegalBookStateException(this.status.name(), "대출");
+        }
     }
 }

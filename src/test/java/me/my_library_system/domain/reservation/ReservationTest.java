@@ -2,6 +2,7 @@ package me.my_library_system.domain.reservation;
 
 import me.my_library_system.domain.loan.exception.OverDueLoanException;
 import me.my_library_system.domain.reservation.exception.DuplicatedReservationException;
+import me.my_library_system.domain.reservation.exception.IllegalReservationStateException;
 import me.my_library_system.domain.reservation.exception.ReservationCooldownException;
 import me.my_library_system.domain.reservation.exception.ReservationLimitExceededException;
 import org.assertj.core.api.Assertions;
@@ -78,8 +79,22 @@ class ReservationTest {
             Reservation reservation = Reservation.createReservation(1L, 10L, policy,context);
             reservation.canceledReservation();
 
-            Assertions.assertThat(reservation.getStatus()).isEqualTo(ReservationStatus.CANCELLED);
-            Assertions.assertThat(reservation.getReservationCanceledDate()).isNotNull();
+            assertThat(reservation.getStatus()).isEqualTo(ReservationStatus.CANCELLED);
+            assertThat(reservation.getReservationCanceledDate()).isNotNull();
         }
+
+        @Test
+        void 예약_취소는_정상일떄만_가능하다() {
+            ReservationCreateContext context = new ReservationCreateContext(
+                    false, 0, 0 ,0);
+
+            Reservation reservation = Reservation.createReservation(1L, 10L, policy,context);
+            reservation.canceledReservation();
+
+            assertThatThrownBy(()->reservation.canceledReservation())
+                    .isInstanceOf(IllegalReservationStateException.class);
+
+        }
+
     }
 }

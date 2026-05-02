@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 
 import java.time.Clock;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -23,11 +24,11 @@ class LoanJpaRepositoryTest {
     void 이용자ID와_책ID로_대출정보를_조회한다() {
 
         loanJpaRepository.save(LoanFixture.createLoan(Clock.systemDefaultZone()));
-        Optional<Loan> loan = loanJpaRepository.findByMemberIdAndBookId(1L, 1L);
+        Optional<Loan> loan = loanJpaRepository.findByMemberIdAndBookItemId(10L, 101L);
 
         assertThat(loan).isPresent();
-        assertThat(loan.get().getMemberId()).isEqualTo(1);
-        assertThat(loan.get().getBookId()).isEqualTo(1L);
+        assertThat(loan.get().getMemberId()).isEqualTo(10L);
+        assertThat(loan.get().getBookItemId()).isEqualTo(101L);
     }
 
     @Test
@@ -37,7 +38,7 @@ class LoanJpaRepositoryTest {
 
     @Test
     void 이용자id로_연체중인_도서_조회(){
-        assertThat(loanJpaRepository.countByMemberIdAndStatusAndDueDateBefore(1L, LoanStatus.LOAN, LocalDateTime.now()));
+        assertThat(loanJpaRepository.countByMemberIdAndStatusAndDueDateBefore(1L, LoanStatus.LOAN, LocalDate.now()));
     }
 
 }

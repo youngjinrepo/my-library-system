@@ -7,6 +7,7 @@ import me.my_library_system.domain.loan.LoanRepository;
 import me.my_library_system.domain.loan.LoanStatus;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -17,8 +18,8 @@ public class LoanPersistenceAdapter implements LoanRepository {
     private final LoanJpaRepository loanJpaRepository;
 
     @Override
-    public Optional<Loan> findByMemberIdAndBookId(Long memberId, Long bookItemId) {
-        return loanJpaRepository.findByMemberIdAndBookId(memberId, bookItemId);
+    public Optional<Loan> findByMemberIdAndBookItemId(Long memberId, Long bookItemId) {
+        return loanJpaRepository.findByMemberIdAndBookItemId(memberId, bookItemId);
     }
 
     @Override
@@ -37,7 +38,7 @@ public class LoanPersistenceAdapter implements LoanRepository {
     }
 
     @Override
-    public int countOverdueLoans(Long memberId, LocalDateTime date) {
+    public int countOverdueLoans(Long memberId, LocalDate date) {
         return loanJpaRepository.countByMemberIdAndStatusAndDueDateBefore(memberId, LoanStatus.LOAN, date);
     }
 }

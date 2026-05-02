@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LibraryRepository extends CrudRepository<Library, Long> {
 
-    //@Cacheable(value = "libraryCache")
     @Query("SELECT l FROM Library l WHERE l.id = 1")
     Library getLibrary();
 }

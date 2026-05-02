@@ -14,7 +14,6 @@ import java.util.Optional;
 public class BookItemPersistenceAdapter implements BookItemRepository {
     private final BookItemJpaRepository bookItemJpaRepository;
 
-
     @Override
     public Optional<BookItem> findById(Long id) {
         return bookItemJpaRepository.findById(id);

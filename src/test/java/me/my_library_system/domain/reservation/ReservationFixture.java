@@ -10,9 +10,8 @@ public class ReservationFixture {
     }
 
     public static Reservation canceledReservation() {
-//        Reservation reservation = createReservation(2L, 1L);
-//        reservation.canceledReservation();
-//        return reservation;
-        return  null;
+        Reservation reservation = normalReservation();
+        reservation.canceledReservation();
+        return reservation;
     }
 }

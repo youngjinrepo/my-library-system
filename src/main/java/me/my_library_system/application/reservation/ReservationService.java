@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -30,10 +31,10 @@ public class ReservationService {
                 hasSameReserve,
                 reservations.size(),
                 reservationRepository.countCancellationSince(memberId, policy.cancellationCooldown(), LocalDateTime.now(clock)),
-                loanRepository.countOverdueLoans(memberId, LocalDateTime.now(clock))
+                loanRepository.countOverdueLoans(memberId, LocalDate.now(clock))
         );
 
-        Reservation reservation = Reservation.createReservation(memberId, bookInfoId, policy, context);
+        Reservation reservation = Reservation.createReservation(bookInfoId, memberId, policy, context);
 
         reservationRepository.save(reservation);
     }

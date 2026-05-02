@@ -30,9 +30,9 @@ class ReturnBookServiceTest {
     void 반납_테스트() {
         given(loanRepository.findById(1L))
                 .willReturn(Optional.of(LoanFixture.createLoan(Clock.systemDefaultZone())));
-        given(bookItemRepository.findById(1L))
+        given(bookItemRepository.findById(101L))
                 .willReturn(Optional.of(BookFixture.createLoanBookItem()));
-        given(memberRepository.findById(1L))
+        given(memberRepository.findById(10L))
                 .willReturn(Optional.of(MemberFixture.createRegularMember()));
 
         returnBookService.returnBook(1L, LocalDateTime.now());
