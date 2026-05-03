@@ -1,6 +1,7 @@
 package me.my_library_system.application.returnBook;
 
 import lombok.RequiredArgsConstructor;
+import me.my_library_system.common.exception.EntityNotFoundException;
 import me.my_library_system.domain.book.BookItem;
 import me.my_library_system.domain.book.BookItemRepository;
 import me.my_library_system.domain.loan.Loan;
@@ -28,9 +29,9 @@ public class ReturnBookService {
 
     @Transactional
     public void returnBook(Long loanId, LocalDateTime returnDateTime) {
-        Loan loan = loanRepository.findById(loanId).orElseThrow();
-        BookItem bookItem = bookItemRepository.findById(loan.getBookItemId()).orElseThrow();
-        Member member = memberRepository.findById(loan.getMemberId()).orElseThrow();
+        Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new EntityNotFoundException("Loan", loanId));
+        BookItem bookItem = bookItemRepository.findById(loan.getBookItemId()).orElseThrow(() -> new EntityNotFoundException("BookItem", loan.getBookItemId()));
+        Member member = memberRepository.findById(loan.getMemberId()).orElseThrow(() -> new EntityNotFoundException("Member", loan.getMemberId()));
 
         loan.returnLoan();
         bookItem.returnBook();

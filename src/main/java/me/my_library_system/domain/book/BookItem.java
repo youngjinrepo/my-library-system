@@ -44,7 +44,7 @@ public class BookItem {
 
     public void unavailable() {
         if (this.status==BookItemStatus.LOANED) {
-            throw new IllegalStateException("대출중인 도서는 비활성화 할 수 없습니다.");
+            throw new IllegalBookStateException(BookItemStatus.LOANED.name(), "비활성");
         }
         this.status = BookItemStatus.UNAVAILABLE;
     }

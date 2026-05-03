@@ -2,6 +2,10 @@ package me.my_library_system.domain.member;
 
 import jakarta.persistence.*;
 import lombok.*;
+import me.my_library_system.domain.member.exception.InvalidMemberInput;
+import me.my_library_system.domain.member.exception.InvalidMemberStateException;
+import me.my_library_system.domain.member.exception.MemberNotBorrowableException;
+import me.my_library_system.domain.member.exception.MemberSuspendedException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -40,10 +44,10 @@ public class Member {
 
     public void promoteMember(Member member, String ci) {
         if (member.grade!=MemberGrade.ASSOCIATE) {
-            throw new IllegalStateException("Cannot modify member");
+            throw new InvalidMemberStateException();
         }
         if (ci == null || ci.trim().isEmpty()) {
-            throw new IllegalArgumentException("CI 값은 비어있으면 안됩니다.");
+            throw new InvalidMemberInput("CI 값은 비어있으면 안됩니다.");
         }
         member.ci = ci;
         member.updateAt = LocalDateTime.now();
@@ -52,11 +56,11 @@ public class Member {
 
     public boolean canBorrow() {
         if (this.grade!=MemberGrade.REGULAR) {
-            throw new IllegalStateException("대출 불가한 이용자 입니다.");
+            throw new MemberNotBorrowableException("대출 불가한 이용자 입니다.");
         }
         if (this.suspendedDate != null && LocalDateTime.now().isBefore(this.suspendedDate)) {
             String formatted = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(suspendedDate);
-            throw new IllegalStateException(formatted + "까지 대출 불가합니다.");
+            throw new MemberSuspendedException(formatted + "까지 대출 불가합니다.");
         }
         return true;
     }

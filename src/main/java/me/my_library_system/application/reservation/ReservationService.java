@@ -21,7 +21,7 @@ public class ReservationService {
     private final Clock clock;
 
     @Transactional
-    public void reservationProcess(Long bookInfoId, Long memberId) {
+    public void reserve(Long bookInfoId, Long memberId) {
         ReservationPolicy policy = libraryRepository.getLibrary().getReservationPolicy();
         List<Reservation> reservations = reservationRepository.findByMemberIdAndStatus(memberId, ReservationStatus.ACTIVE);
 

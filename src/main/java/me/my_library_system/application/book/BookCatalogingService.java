@@ -1,6 +1,7 @@
 package me.my_library_system.application.book;
 
 import lombok.RequiredArgsConstructor;
+import me.my_library_system.common.exception.EntityNotFoundException;
 import me.my_library_system.domain.library.Library;
 import me.my_library_system.domain.book.BookInfo;
 import me.my_library_system.adapter.out.persistence.sequnce.CustomSequence;
@@ -20,7 +21,7 @@ public class BookCatalogingService {
 
     @Transactional
     public void processCataloging(Long bookId, String classify, int bookCnt) {
-        BookInfo bookInfo = bookInfoRepository.findById(bookId).orElseThrow();
+        BookInfo bookInfo = bookInfoRepository.findById(bookId).orElseThrow(()->new EntityNotFoundException("BookInfo", bookId));
         CustomSequence customSequence = sequenceRepository.findByNameWithLock("BOOK_CODE")
                 .orElseGet(() -> sequenceRepository.save(new CustomSequence("BOOK_CODE", 0)));
 
@@ -33,14 +34,14 @@ public class BookCatalogingService {
 
     @Transactional
     public void processShelving(Long bookId, String location){
-        BookInfo bookInfo = bookInfoRepository.findById(bookId).orElseThrow();
+        BookInfo bookInfo = bookInfoRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("BookInfo", bookId));
         bookInfo.shelve(location);
         bookInfoRepository.save(bookInfo);
     }
 
     @Transactional
     public void processRemove(Long bookInfoId) {
-        BookInfo bookInfo = bookInfoRepository.findById(bookInfoId).orElseThrow();
+        BookInfo bookInfo = bookInfoRepository.findById(bookInfoId).orElseThrow(() ->  new EntityNotFoundException("BookInfo", bookInfoId));
         bookInfo.validateRemovable();
         bookInfoRepository.deleteById(bookInfoId);
     }

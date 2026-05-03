@@ -1,10 +1,11 @@
 package me.my_library_system.application.loan;
 
 import lombok.RequiredArgsConstructor;
+import me.my_library_system.common.exception.EntityNotFoundException;
 import me.my_library_system.domain.library.Library;
 import me.my_library_system.domain.loan.*;
-import me.my_library_system.domain.library.Policy;
 import me.my_library_system.domain.book.BookItem;
+import me.my_library_system.domain.loan.exception.RenewalNotAllowedException;
 import me.my_library_system.domain.member.Member;
 import me.my_library_system.domain.book.BookItemRepository;
 import me.my_library_system.domain.library.LibraryRepository;
@@ -30,8 +31,8 @@ public class LoanService {
 
     @Transactional
     public void loan(Long memberId, Long bookItemId){
-        Member member = memberRepository.findById(memberId).orElseThrow();
-        BookItem bookItem = bookItemRepository.findById(bookItemId).orElseThrow();
+        Member member = memberRepository.findById(memberId).orElseThrow(()->new EntityNotFoundException("Member", memberId));
+        BookItem bookItem = bookItemRepository.findById(bookItemId).orElseThrow(()->new EntityNotFoundException("BookItem", bookItemId));
         Library library = libraryRepository.getLibrary();
 
         member.canBorrow();
@@ -52,15 +53,15 @@ public class LoanService {
     @Transactional
     public void renewalDueDate(Long memberId, Long bookItemId) {
         Loan loan = loanRepository.findByMemberIdAndBookItemId(memberId, bookItemId)
-                .orElseThrow(() -> new IllegalArgumentException("조회되는 대출 내역이 없습니다."));
+                .orElseThrow(() -> new EntityNotFoundException("loan", null));
         Library library = libraryRepository.getLibrary();
 
-        BookItem bookItem = bookItemRepository.findById(bookItemId).orElseThrow();
+        BookItem bookItem = bookItemRepository.findById(bookItemId).orElseThrow(() -> new EntityNotFoundException("BookItem", bookItemId));
         Long bookInfoId = bookItem.getBookInfo().getId();
 
         int reservationCount = reservationRepository.countByBookInfoIdAndStatus(bookInfoId, ReservationStatus.ACTIVE);
         if (reservationCount > 0) {
-            throw new IllegalStateException("예약중인 이용자가 있어 밥납연기 할 수 없습니다.");
+            throw new RenewalNotAllowedException("예약중인 이용자가 있어 반납연기 할 수 없습니다.");
         }
 
         LoanPolicy loanPolicy = library.getLoanPolicy();

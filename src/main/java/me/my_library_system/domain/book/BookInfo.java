@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import me.my_library_system.domain.book.exception.BookRemovalNotAllowed;
+import me.my_library_system.domain.book.exception.IllegalBookStateException;
+import me.my_library_system.domain.book.exception.InvalidBookInputException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,13 +49,13 @@ public class BookInfo {
 
     public void cataloging(String classify, int bookCnt, int startSequence,String code) {
         if ( this.id==null ) {
-            throw new RuntimeException("Book ID is null");
+            throw new InvalidBookInputException("Book ID is null");
         }
         if ( this.status != BookInfoStatus.DRAFT) {
-            throw new IllegalStateException("DRAFT 상태일 때만 편목이 가능합니다.");
+            throw new IllegalBookStateException(BookInfoStatus.DRAFT.name(), "편목");
         }
         if ( bookCnt <= 0 ) {
-            throw new IllegalArgumentException("도서의 갯수를 올바르게 입력해주세요");
+            throw new InvalidBookInputException("도서의 갯수를 올바르게 입력해주세요");
         }
 
         for (int i = 0; i < bookCnt; i++) {
@@ -65,10 +68,10 @@ public class BookInfo {
 
     public void shelve(String location) {
         if ( this.status != BookInfoStatus.CATALOGING) {
-            throw new IllegalStateException("CATALOGING 상태일 때만 배가가 가능합니다.");
+            throw new IllegalBookStateException(BookInfoStatus.CATALOGING.name(),"배가");
         }
         if (location.isEmpty()) {
-            throw new IllegalArgumentException("배가 위치를 입력 해야합니다.");
+            throw new InvalidBookInputException("배가 위치를 입력 해야합니다.");
         }
         this.status = BookInfoStatus.COMPLETED;
         this.bookItems.forEach(bookItem ->  bookItem.shelving(location));
@@ -77,7 +80,7 @@ public class BookInfo {
     public void validateRemovable(){
         this.bookItems.forEach(bookItem -> {
             if (bookItem.getStatus().equals(BookItemStatus.LOANED)) {
-                throw new IllegalStateException("대출중인 도서가 있을 경우 서지 정보를 제거 할 수 없습니다.");
+                throw new BookRemovalNotAllowed("대출중인 도서가 있을 경우 서지 정보를 제거 할 수 없습니다.");
             }
         });
 

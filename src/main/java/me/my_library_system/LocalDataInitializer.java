@@ -3,7 +3,6 @@ package me.my_library_system;
 import lombok.RequiredArgsConstructor;
 import me.my_library_system.domain.library.Library;
 import me.my_library_system.domain.library.OperatingSchedule;
-import me.my_library_system.domain.library.Policy;
 import me.my_library_system.domain.library.LibraryRepository;
 import me.my_library_system.domain.loan.LoanPolicy;
 import me.my_library_system.domain.reservation.ReservationPolicy;
