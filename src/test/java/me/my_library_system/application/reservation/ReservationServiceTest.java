@@ -33,7 +33,7 @@ class ReservationServiceTest {
         given(loanRepository.countOverdueLoans(10L, LocalDate.now(clock)))
                 .willReturn(0);
 
-        reservationService.reservationProcess(1L, 10L);
+        reservationService.reserve(1L, 10L);
 
         then(reservationRepository).should(times(1)).save(any());
     }

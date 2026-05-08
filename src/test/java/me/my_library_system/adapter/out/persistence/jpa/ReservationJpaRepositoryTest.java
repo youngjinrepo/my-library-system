@@ -43,4 +43,12 @@ class ReservationJpaRepositoryTest {
         int cnt = reservationJpaRepository.countByBookInfoIdAndStatus(1L, ReservationStatus.ACTIVE);
         assertThat(cnt).isEqualTo(1);
     }
+
+    @Test
+    void 전체_예약내역_조회(){
+        reservationJpaRepository.save(ReservationFixture.normalReservation());
+
+        List<Reservation> reservations = reservationJpaRepository.findAll();
+        assertThat(reservations).hasSize(1);
+    }
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,5 +34,13 @@ public class ReservationPersistenceAdapter implements ReservationRepository {
     @Override
     public int countByBookInfoIdAndStatus(Long bookInfoId, ReservationStatus reservationStatus) {
         return reservationJpaRepository.countByBookInfoIdAndStatus(bookInfoId, reservationStatus);
+    }
+
+    public List<Reservation> findAll() {
+        return reservationJpaRepository.findAll();
+    }
+
+    public Optional<Reservation> findById(Long reservationId) {
+        return reservationJpaRepository.findById(reservationId);
     }
 }
