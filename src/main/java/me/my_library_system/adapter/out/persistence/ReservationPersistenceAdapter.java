@@ -17,8 +17,8 @@ public class ReservationPersistenceAdapter implements ReservationRepository {
     private final ReservationJpaRepository reservationJpaRepository;
 
     @Override
-    public void save(Reservation reservation) {
-        reservationJpaRepository.save(reservation);
+    public Reservation save(Reservation reservation) {
+        return reservationJpaRepository.save(reservation);
     }
 
     @Override

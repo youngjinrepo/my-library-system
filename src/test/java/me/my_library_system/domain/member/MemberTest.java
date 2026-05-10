@@ -1,5 +1,9 @@
 package me.my_library_system.domain.member;
 
+import me.my_library_system.domain.member.exception.InvalidMemberInput;
+import me.my_library_system.domain.member.exception.InvalidMemberStateException;
+import me.my_library_system.domain.member.exception.MemberNotBorrowableException;
+import me.my_library_system.domain.member.exception.MemberSuspendedException;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
@@ -27,15 +31,14 @@ class MemberTest {
     void promoteMemberFail() {
         Member regularMember = MemberFixture.createRegularMember();
         assertThatThrownBy(() -> regularMember.promoteMember(regularMember, "ci"))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("Cannot modify member");
+                .isInstanceOf(InvalidMemberStateException.class);
     }
 
     @Test
     void 멤버_승격_CI_없으면_실패() {
         Member associateMember = MemberFixture.createAssociateMember();
         assertThatThrownBy(()->associateMember.promoteMember(associateMember, ""))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(InvalidMemberInput.class)
                 .hasMessageContaining("CI 값은 비어있으면 안됩니다.");
     }
 
@@ -49,15 +52,14 @@ class MemberTest {
     @Test
     void canBorrowException() {
         Member member = MemberFixture.createAssociateMember();
-        assertThatThrownBy(() -> member.canBorrow()).isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(() -> member.canBorrow()).isInstanceOf(MemberNotBorrowableException.class);
     }
 
     @Test
     void 대출정지기간에는_대출_불가(){
         Member suspendedMember = MemberFixture.createSuspendedMember();
         assertThatThrownBy(()->suspendedMember.canBorrow())
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("까지 대출 불가합니다.");
+                .isInstanceOf(MemberSuspendedException.class);
     }
 
 

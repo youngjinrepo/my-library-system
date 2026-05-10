@@ -3,6 +3,8 @@ package me.my_library_system.application.book;
 import me.my_library_system.adapter.out.persistence.sequnce.CustomSequence;
 import me.my_library_system.adapter.out.persistence.sequnce.CustomSequenceRepository;
 import me.my_library_system.domain.book.*;
+import me.my_library_system.domain.book.exception.IllegalBookStateException;
+import me.my_library_system.domain.book.exception.InvalidBookInputException;
 import me.my_library_system.domain.library.Library;
 import me.my_library_system.domain.library.LibraryFixture;
 import me.my_library_system.domain.library.LibraryRepository;
@@ -61,8 +63,7 @@ class BookCatalogingServiceTest {
                 .willReturn(library);
 
         assertThatThrownBy(() -> bookCatalogingService.processCataloging(1L, "843", 3))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("DRAFT 상태일 때만 편목이 가능합니다.");
+                .isInstanceOf(IllegalBookStateException.class);
     }
 
     @Test
@@ -75,8 +76,7 @@ class BookCatalogingServiceTest {
                 .willReturn(library);
 
         assertThatThrownBy(() -> bookCatalogingService.processCataloging(1L, "843", 0))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("도서의 갯수를 올바르게 입력해주세요");
+                .isInstanceOf(InvalidBookInputException.class);
     }
 
     @Test
@@ -94,8 +94,7 @@ class BookCatalogingServiceTest {
         given(bookInfoRepository.findById(1L))
                 .willReturn(Optional.of(BookFixture.createBookInfo()));
         assertThatThrownBy(() -> bookCatalogingService.processShelving(1L, "1층 종합자료실"))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("CATALOGING 상태일 때만 배가가 가능합니다.");
+                .isInstanceOf(IllegalBookStateException.class);
     }
 
     @Test
@@ -103,8 +102,7 @@ class BookCatalogingServiceTest {
         given(bookInfoRepository.findById(1L))
                 .willReturn(Optional.of(BookFixture.createCatalogingBookInfo()));
         assertThatThrownBy(() -> bookCatalogingService.processShelving(1L, ""))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("배가 위치를 입력 해야합니다.");
+                .isInstanceOf(InvalidBookInputException.class);
     }
 
     @Test

@@ -1,5 +1,6 @@
 package me.my_library_system.domain.book;
 
+import me.my_library_system.domain.book.exception.BookRemovalNotAllowed;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
@@ -41,7 +42,7 @@ class BookInfoTest {
         BookInfo bookInfo = BookFixture.createShelvingBookInfo();
         bookInfo.getBookItems().add(BookFixture.createLoanBookItem());
         assertThatThrownBy(() -> bookInfo.validateRemovable())
-                .isInstanceOf(IllegalStateException.class)
+                .isInstanceOf(BookRemovalNotAllowed.class)
                 .hasMessageContaining("대출중인 도서가 있을 경우 서지 정보를 제거 할 수 없습니다.");
     }
 

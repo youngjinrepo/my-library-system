@@ -8,6 +8,7 @@ import me.my_library_system.domain.loan.Loan;
 import me.my_library_system.domain.member.MemberFixture;
 import me.my_library_system.domain.member.MemberRepository;
 import me.my_library_system.domain.loan.LoanRepository;
+import me.my_library_system.domain.member.exception.MemberNotBorrowableException;
 import me.my_library_system.domain.reservation.ReservationRepository;
 import org.junit.jupiter.api.Test;
 
@@ -56,7 +57,7 @@ class LoanServiceTest {
 
 
         assertThatThrownBy(() -> loanService.loan(1L , 1L))
-                .isInstanceOf(IllegalStateException.class)
+                .isInstanceOf(MemberNotBorrowableException.class)
                 .hasMessageContaining("대출 불가한 이용자 입니다.");
     }
 
